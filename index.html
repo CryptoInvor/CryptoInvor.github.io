@@ -246,7 +246,11 @@ h2:hover:after, h3:hover:after {
     opacity: 1;
     transform: translateY(0);
   }
-}
+}  
+#testContainer {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
     </style>
 </head>
 <body>
@@ -363,7 +367,374 @@ h2:hover:after, h3:hover:after {
     <p>Развитие радиоэлектроники в годы Великой Отечественной войны стало одним из ключевых факторов, обеспечивших технологическое превосходство СССР над противником на заключительных этапах войны. Несмотря на тяжелейшие условия эвакуации производства, дефицит ресурсов и кадров, советским ученым и инженерам удалось не только наладить массовый выпуск радиоэлектронной аппаратуры, но и создать новые образцы техники.</p>
     
     <p>Опыт создания и применения радиолокационных станций, средств связи и радиоразведки заложил фундамент для послевоенного развития отечественной радиоэлектронной промышленности. Многие технические решения, найденные в экстремальных условиях войны, нашли применение в мирных технологиях и способствовали технологическому прогрессу в последующие десятилетия.</p>
+    <div class="test-button-container" style="text-align: center; margin: 40px 0;">
+  <button id="openTestBtn" class="test-button" style="padding: 15px 30px; background-color: #b22222; color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    Проверить свои знания
+  </button>
+</div>
+    <div id="testContainer" style="display: none; margin-top: 30px;">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест: Радиоэлектроника в Великой Отечественной войне</title>
+  <style>
+    /* Стили соответствуют оригинальному сайту */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+      position: relative;
+      background: linear-gradient(-45deg, #f5f5f5, #e8e8e8, #edd8d8, #ebd4d4);
+      background-size: 400% 400%;
+      animation: gradientBG 5s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .intro, .question, h1, h2, h3, p, ul, ol {
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 5px;
+      padding: 5px 10px;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    h1 {
+      color: #b22222;
+      text-align: center;
+      border-bottom: 2px solid #b22222;
+      padding-bottom: 10px;
+      animation-delay: 0s;
+    }
+
+    h2 {
+      color: #b22222;
+      border-left: 4px solid #b22222;
+      padding-left: 10px;
+      margin-top: 30px;
+      animation-delay: 0.2s;
+    }
+
+    .test-container {
+      margin-top: 30px;
+    }
+
+    .question {
+      background-color: rgba(249, 249, 249, 0.8);
+      border-left: 3px solid #b22222;
+      margin: 20px 0;
+      padding: 15px;
+      animation-delay: calc(0.3s + var(--question-index) * 0.1s);
+    }
+
+    .options {
+      list-style-type: none;
+      padding-left: 10px;
+    }
+
+    .options li {
+      margin: 10px 0;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .options li:hover {
+      background-color: rgba(178, 34, 34, 0.1);
+      transform: translateX(10px);
+    }
+
+    .result-btn {
+      display: block;
+      margin: 30px auto;
+      padding: 12px 25px;
+      background-color: #b22222;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+      animation-delay: 1.5s;
+    }
+
+    .result-btn:hover {
+      background-color: #8b0000;
+      transform: scale(1.05);
+    }
+
+    .result {
+      display: none;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 5px;
+      padding: 20px;
+      margin-top: 30px;
+      text-align: center;
+      border: 2px solid #b22222;
+    }
+
+    .selected {
+      background-color: rgba(178, 34, 34, 0.2);
+    }
+
+    .correct {
+      background-color: rgba(0, 128, 0, 0.2);
+      border: 1px solid green;
+    }
+
+    .incorrect {
+      background-color: rgba(255, 0, 0, 0.1);
+      border: 1px solid red;
+    }
+
+    .important-fact {
+      font-weight: bold;
+      position: relative;
+      display: inline-block;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 0px rgba(178, 34, 34, 0); }
+      to { text-shadow: 0 0 10px rgba(178, 34, 34, 0.5); }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Проверь свои знания: Радиоэлектроника в Великой Отечественной войне</h1>
+  
+  <div class="intro">
+    <p>Предлагаем вам проверить свои знания о роли радиоэлектроники в Великой Отечественной войне. Этот тест поможет закрепить информацию, представленную на нашем сайте, и оценить ваше понимание технических и исторических аспектов развития радиоэлектроники в военное время.</p>
+    <p class="important-fact">За правильные ответы на все вопросы вы получите звание "Инженер-радист"!</p>
+  </div>
+  
+  <div class="test-container">
+    <div class="question" style="--question-index: 1;">
+      <h3>Вопрос 1: Какая советская радиолокационная станция использовалась для обнаружения вражеских самолётов во время Великой Отечественной войны?</h3>
+      <ul class="options" data-correct="1">
+        <li data-index="0">РСИ-3</li>
+        <li data-index="1">РУС-2 (Редут)</li>
+        <li data-index="2">71-ТК</li>
+        <li data-index="3">РБ</li>
+      </ul>
+    </div>
     
+    <div class="question" style="--question-index: 2;">
+      <h3>Вопрос 2: К концу 1939 года была успешно испытана первая советская импульсная РЛС. На каком расстоянии она могла обнаруживать самолеты?</h3>
+      <ul class="options" data-correct="2">
+        <li data-index="0">До 50 км</li>
+        <li data-index="1">До 80 км</li>
+        <li data-index="2">До 120 км</li>
+        <li data-index="3">До 200 км</li>
+      </ul>
+    </div>
+    
+    <div class="question" style="--question-index: 3;">
+      <h3>Вопрос 3: Какой процент советских танков КВ-1 был оснащен радиостанциями к началу войны?</h3>
+      <ul class="options" data-correct="0">
+        <li data-index="0">20%</li>
+        <li data-index="1">35%</li>
+        <li data-index="2">50%</li>
+        <li data-index="3">75%</li>
+      </ul>
+    </div>
+    
+    <div class="question" style="--question-index: 4;">
+      <h3>Вопрос 4: Как называлась первая отечественная УКВ-радиостанция с частотной модуляцией, созданная в 1942 году?</h3>
+      <ul class="options" data-correct="2">
+        <li data-index="0">РБ</li>
+        <li data-index="1">РСИ-6</li>
+        <li data-index="2">А-7</li>
+        <li data-index="3">9-Р</li>
+      </ul>
+    </div>
+    
+    <div class="question" style="--question-index: 5;">
+      <h3>Вопрос 5: Какое ключевое новшество было представлено в радиостанции РСИ-6, разработанной в 1942 году?</h3>
+      <ul class="options" data-correct="3">
+        <li data-index="0">Двусторонняя связь</li>
+        <li data-index="1">Шифрование сигнала</li>
+        <li data-index="2">Увеличенная дальность действия</li>
+        <li data-index="3">Кварцевая стабилизация частоты</li>
+      </ul>
+    </div>
+    
+    <div class="question" style="--question-index: 6;">
+      <h3>Вопрос 6: Сколько станций РУС-2 было произведено всего за время войны?</h3>
+      <ul class="options" data-correct="1">
+        <li data-index="0">Около 300</li>
+        <li data-index="1">607</li>
+        <li data-index="2">Более 1000</li>
+        <li data-index="3">412</li>
+      </ul>
+    </div>
+    
+    <div class="question" style="--question-index: 7;">
+      <h3>Вопрос 7: Какое кодовое название имела операция советской радиоразведки, проведенная в сентябре 1943 года для дезориентации немецкого командования?</h3>
+      <ul class="options" data-correct="1">
+        <li data-index="0">Шторм</li>
+        <li data-index="1">Концерт</li>
+        <li data-index="2">Гром-1</li>
+        <li data-index="3">Импульс</li>
+      </ul>
+    </div>
+    
+    <div class="question" style="--question-index: 8;">
+      <h3>Вопрос 8: Какой процент штурмовиков Ил-2 был оснащен радиостанциями к 1944 году?</h3>
+      <ul class="options" data-correct="3">
+        <li data-index="0">40%</li>
+        <li data-index="1">55%</li>
+        <li data-index="2">65%</li>
+        <li data-index="3">80%</li>
+      </ul>
+    </div>
+    
+    <div class="question" style="--question-index: 9;">
+      <h3>Вопрос 9: Какие генераторы использовались первыми группами радиопомех, созданными в 1942 году?</h3>
+      <ul class="options" data-correct="2">
+        <li data-index="0">РУС-3 и РЛС-1</li>
+        <li data-index="1">ВИР-2 и ВИМ</li>
+        <li data-index="2">Гром-1 и Шторм</li>
+        <li data-index="3">Пегматит и ЭО-2</li>
+      </ul>
+    </div>
+    
+    <div class="question" style="--question-index: 10;">
+      <h3>Вопрос 10: Как назывался первый советский радиовзрыватель, испытания которого прошли в 1942 году?</h3>
+      <ul class="options" data-correct="3">
+        <li data-index="0">РЭБ-1</li>
+        <li data-index="1">РУС-4</li>
+        <li data-index="2">Гроза</li>
+        <li data-index="3">ВИМ (Высотный Импульсный Модулятор)</li>
+      </ul>
+    </div>
+    
+    <button class="result-btn" onclick="showResults()">Проверить результаты</button>
+    
+    <div class="result" id="resultContainer">
+      <h2>Ваш результат: <span id="score">0</span> из 10</h2>
+      <p id="resultMessage"></p>
+      <button onclick="resetTest()" style="padding:10px; background-color:#b22222; color:white; border:none; border-radius:5px; cursor:pointer; margin-top:15px;">Пройти тест снова</button>
+    </div>
+  </div>
+
+  <script>
+    // Инициализация теста
+    let selectedAnswers = {};
+    
+    // Добавляем обработчики для вариантов ответов
+    document.querySelectorAll('.options li').forEach(option => {
+      option.addEventListener('click', function() {
+        const questionElement = this.closest('.question');
+        const options = questionElement.querySelectorAll('li');
+        
+        // Снимаем выделение со всех вариантов
+        options.forEach(opt => opt.classList.remove('selected'));
+        
+        // Выделяем выбранный вариант
+        this.classList.add('selected');
+        
+        // Сохраняем ответ
+        const questionIndex = Array.from(document.querySelectorAll('.question')).indexOf(questionElement);
+        selectedAnswers[questionIndex] = parseInt(this.getAttribute('data-index'));
+      });
+    });
+    
+    // Функция для проверки результатов
+    function showResults() {
+      let score = 0;
+      
+      // Проверяем ответы
+      document.querySelectorAll('.question').forEach((question, index) => {
+        const options = question.querySelectorAll('li');
+        const correctIndex = parseInt(question.querySelector('.options').getAttribute('data-correct'));
+        
+        // Сбрасываем классы
+        options.forEach(opt => {
+          opt.classList.remove('correct', 'incorrect');
+        });
+        
+        // Если был выбран ответ на этот вопрос
+        if (selectedAnswers[index] !== undefined) {
+          // Отмечаем правильный ответ
+          options[correctIndex].classList.add('correct');
+          
+          // Если ответ правильный, увеличиваем счет
+          if (selectedAnswers[index] === correctIndex) {
+            score++;
+          } else {
+            // Отмечаем неправильно выбранный ответ
+            options[selectedAnswers[index]].classList.add('incorrect');
+          }
+        } else {
+          // Если ответа не было, отмечаем правильный
+          options[correctIndex].classList.add('correct');
+        }
+      });
+      
+      // Отображаем результат
+      document.getElementById('score').textContent = score;
+      
+      // Формируем сообщение в зависимости от результата
+      let message = '';
+      if (score === 10) {
+        message = 'Поздравляем! Вы настоящий эксперт в области радиоэлектроники времен Великой Отечественной войны! Вам присваивается звание "Инженер-радист высшей категории"!';
+      } else if (score >= 7) {
+        message = 'Отличный результат! Вы хорошо знакомы с историей радиоэлектроники в военное время. Вам присваивается звание "Инженер-радист"!';
+      } else if (score >= 5) {
+        message = 'Неплохой результат. Вы обладаете базовыми знаниями о радиоэлектронике времен Великой Отечественной войны. Вам присваивается звание "Младший радист"!';
+      } else {
+        message = 'Рекомендуем вам внимательнее изучить материалы нашего сайта, чтобы углубить свои знания о радиоэлектронике в военное время.';
+      }
+      
+      document.getElementById('resultMessage').textContent = message;
+      document.getElementById('resultContainer').style.display = 'block';
+      
+      // Скроллим к результатам
+      document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Функция для сброса теста
+    function resetTest() {
+      // Сбрасываем выбранные ответы
+      selectedAnswers = {};
+      
+      // Сбрасываем выделение
+      document.querySelectorAll('.options li').forEach(option => {
+        option.classList.remove('selected', 'correct', 'incorrect');
+      });
+      
+      // Скрываем результаты
+      document.getElementById('resultContainer').style.display = 'none';
+      
+      // Скроллим к началу теста
+      document.querySelector('.test-container').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</div>
     <div class="sources">
         <h3>Список использованной литературы</h3>
         <ol>
@@ -375,5 +746,75 @@ h2:hover:after, h3:hover:after {
             <li>Чернихов Ю. Секретное оружие Америки // Наука и техника. — 2017. — № 7</li>
         </ol>
     </div>
+    <script>
+  document.getElementById('openTestBtn').addEventListener('click', function() {
+    // Плавно скрываем основной контент
+    const mainContent = document.querySelectorAll('body > *:not(#testContainer)');
+    mainContent.forEach(element => {
+      if (element !== document.getElementById('testContainer').parentNode && 
+          element !== document.getElementById('openTestBtn').closest('.test-button-container')) {
+        element.style.transition = 'opacity 0.5s ease';
+        element.style.opacity = '0';
+        setTimeout(() => {
+          element.style.display = 'none';
+        }, 500);
+      }
+    });
+    
+    // Показываем тест
+    setTimeout(() => {
+      document.getElementById('testContainer').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('testContainer').style.opacity = '1';
+      }, 50);
+      
+      // Добавляем кнопку возврата к основному содержимому
+      if (!document.getElementById('backToContentBtn')) {
+        const backButton = document.createElement('button');
+        backButton.id = 'backToContentBtn';
+        backButton.innerText = 'Вернуться к содержанию';
+        backButton.style.padding = '10px 20px';
+        backButton.style.backgroundColor = '#555';
+        backButton.style.color = 'white';
+        backButton.style.border = 'none';
+        backButton.style.borderRadius = '5px';
+        backButton.style.cursor = 'pointer';
+        backButton.style.margin = '20px 0';
+        backButton.style.transition = 'all 0.3s ease';
+        
+        backButton.addEventListener('mouseover', function() {
+          this.style.backgroundColor = '#333';
+        });
+        
+        backButton.addEventListener('mouseout', function() {
+          this.style.backgroundColor = '#555';
+        });
+        
+        backButton.addEventListener('click', function() {
+          // Скрываем тест
+          document.getElementById('testContainer').style.opacity = '0';
+          setTimeout(() => {
+            document.getElementById('testContainer').style.display = 'none';
+            
+            // Показываем основной контент
+            mainContent.forEach(element => {
+              if (element !== document.getElementById('testContainer').parentNode) {
+                element.style.display = '';
+                setTimeout(() => {
+                  element.style.opacity = '1';
+                }, 50);
+              }
+            });
+            
+            // Удаляем кнопку возврата
+            this.remove();
+          }, 500);
+        });
+        
+        document.getElementById('testContainer').prepend(backButton);
+      }
+    }, 550);
+  });
+</script>
 </body>
 </html>
