@@ -1204,6 +1204,7 @@
 
     <!-- JavaScript для переключения вкладок -->
     <script>
+        // --- ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ВКЛАДОК ---
         function showTab(tabId) {
             let contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => {
@@ -1216,51 +1217,63 @@
             });
 
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            
+            // Исправлено: используем event.currentTarget правильно или передаем this
+            if (event) {
+                event.currentTarget.classList.add('active');
+            }
 
             document.getElementById('content-wrapper').scrollTo(0, 0);
-        const trigger = document.getElementById('secret-trigger');
-        const overlay = document.getElementById('video-overlay');
-        const video = document.getElementById('secret-video');
+        }
 
-        trigger.addEventListener('click', function() {
-            // 1. Показываем слой с видео
-            overlay.style.display = 'block';
-            
-            // 2. Устанавливаем громкость (1.0 = 100%)
-            video.volume = 1.0;
-            
-            // 3. Запускаем видео
-            video.play();
+        // --- ЛОГИКА СЕКРЕТНОЙ КНОПКИ (ВНЕ ФУНКЦИИ showTab) ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const trigger = document.getElementById('secret-trigger');
+            const overlay = document.getElementById('video-overlay');
+            const video = document.getElementById('secret-video');
 
-            // 4. Пытаемся развернуть на весь экран
-            if (overlay.requestFullscreen) {
-                overlay.requestFullscreen();
-            } else if (overlay.webkitRequestFullscreen) { /* Safari */
-                overlay.webkitRequestFullscreen();
-            } else if (overlay.msRequestFullscreen) { /* IE11 */
-                overlay.msRequestFullscreen();
+            if (trigger && overlay && video) {
+                trigger.addEventListener('click', function() {
+                    // 1. Показываем слой с видео
+                    overlay.style.display = 'block';
+                    
+                    // 2. Устанавливаем громкость
+                    video.volume = 1.0;
+                    
+                    // 3. Запускаем видео
+                    video.play().catch(error => {
+                        console.log("Автоплей заблокирован браузером, нужно взаимодействие с сайтом");
+                    });
+
+                    // 4. Полноэкранный режим
+                    if (overlay.requestFullscreen) {
+                        overlay.requestFullscreen();
+                    } else if (overlay.webkitRequestFullscreen) {
+                        overlay.webkitRequestFullscreen();
+                    } else if (overlay.msRequestFullscreen) {
+                        overlay.msRequestFullscreen();
+                    }
+                });
+
+                // Закрытие только по окончании
+                video.onended = function() {
+                    overlay.style.display = 'none';
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                };
+
+                // Защита громкости и паузы
+                setInterval(() => {
+                    if (overlay.style.display === 'block') {
+                        video.volume = 1.0;
+                        if (video.paused) {
+                            video.play();
+                        }
+                    }
+                }, 100);
             }
         });
-
-        // Чтобы видео закрылось только когда оно закончится
-        video.onended = function() {
-            overlay.style.display = 'none';
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            }
-        };
-
-        // Защита от попыток сменить громкость или поставить на паузу (если вдруг найдут способ)
-        setInterval(() => {
-            if (overlay.style.display === 'block') {
-                video.volume = 1.0; // Всегда держим громкость на максимуме
-                if (video.paused) {
-                    video.play(); // Если поставили на паузу — запускаем снова
-                }
-            }
-        }, 100);
-        }
     </script>
     <!-- Секретная кнопка в левом нижнем углу сайдбара -->
     <button id="secret-trigger"></button>
