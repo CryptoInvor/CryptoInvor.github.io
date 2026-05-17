@@ -3,806 +3,1190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Невидимый фронт: радиоэлектроника в Великой Отечественной войне</title>
+    <title>Справочник Microsoft Word</title>
     <style>
+        :root {
+            --word-blue: #2b579a;
+            --word-dark: #1e3e6e;
+            --bg-color: #f3f2f1;
+            --text-color: #333333;
+            --sidebar-width: 260px;
+        }
+
         body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    color: #333;
-    position: relative;
-    background: linear-gradient(-45deg, #f5f5f5, #e8e8e8, #edd8d8, #ebd4d4);
-    background-size: 400% 400%;
-    animation: gradientBG 5s ease infinite;
-}
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
+        /* Меню навигации (Sidebar) */
+        #sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--word-blue);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            flex-shrink: 0;
+        }
 
-/* Для улучшения читаемости контента на анимированном фоне */
-.intro, .tech-specs, h1, h2, h3, p, ul, ol {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 5px;
-    padding: 5px 10px;
-}
-
-h1, h2, h3 {
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-.tech-specs {
-    background-color: rgba(249, 249, 249, 0.9);
-}
-        h1 {
-            color: #b22222;
+        .sidebar-header {
+            padding: 20px;
+            background-color: var(--word-dark);
             text-align: center;
-            border-bottom: 2px solid #b22222;
-            padding-bottom: 10px;
         }
-        h2 {
-            color: #b22222;
-            border-left: 4px solid #b22222;
-            padding-left: 10px;
-            margin-top: 30px;
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
         }
-        h3 {
-            color: #555;
-            margin-top: 25px;
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
         }
-        p {
-            text-align: justify;
+
+        .nav-links li {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 15px;
         }
-        .date {
+
+        .nav-links li:hover, .nav-links li.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-left: 4px solid white;
+        }
+
+        /* Область контента */
+        #content-wrapper {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 30px;
+            scroll-behavior: smooth;
+        }
+
+        .tab-content {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h1 { color: var(--word-blue); border-bottom: 2px solid var(--word-blue); padding-bottom: 10px; font-size: 28px; }
+        h2 { color: var(--word-dark); margin-top: 30px; }
+        h3 { color: var(--word-blue); margin-top: 25px; }
+
+        p { line-height: 1.6; margin-bottom: 15px; }
+        ul, ol { line-height: 1.6; margin-bottom: 15px; padding-left: 25px; }
+        li { margin-bottom: 8px; }
+
+        /* Настройка блоков под картинки */
+        .img-placeholder {
+            margin: 25px 0;
+            text-align: center;
+            background-color: transparent;
+            padding: 10px 0;
+        }
+
+        /* Сама картинка */
+        .img-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Лёгкая красивая тень */
+            display: block;
+            margin: 0 auto 12px auto;
+        }
+
+        /* Подпись под картинкой */
+        .img-placeholder .caption {
             font-style: italic;
-            color: #666;
+            font-size: 14px;
+            color: #475569;
+            display: block;
         }
-        .tech-specs {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-left: 3px solid #b22222;
-            margin: 15px 0;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
         }
-        .important-fact {
-            font-weight: bold;
+
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 12px; text-align: left; }
+        th { background-color: var(--word-blue); color: white; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .sources {
-            margin-top: 40px;
-            border-top: 1px solid #ddd;
-            padding-top: 20px;
-        }
-        .sources li {
-            margin-bottom: 8px;
-        }
-/* Добавляем анимацию появления для заголовков */
-h1, h2, h3 {
-  opacity: 0;
-  animation: fadeIn 1.2s ease forwards;
-}
-
-h2 {
-  animation-delay: 0.3s;
-}
-
-h3 {
-  animation-delay: 0.5s;
-}
-
-/* Анимация появления текста */
-p, ul, ol {
-  opacity: 0;
-  animation: fadeIn 1.5s ease forwards;
-  animation-delay: 0.7s;
-}
-
-/* Основные анимации */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Выделение для важных фактов */
-.important-fact {
-  position: relative;
-  display: inline-block;
-  animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    text-shadow: 0 0 0px rgba(178, 34, 34, 0);
-  }
-  to {
-    text-shadow: 0 0 10px rgba(178, 34, 34, 0.5);
-  }
-}
-
-/* Анимация для технических спецификаций */
-.tech-specs {
-  animation: slideFadeIn 1.2s ease forwards;
-  animation-delay: 0.8s;
-  opacity: 0;
-}
-
-@keyframes slideFadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Эффект выделения при наведении для элементов списка */
-li {
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-li:hover {
-  transform: translateX(10px);
-  color: #b22222;
-}
-
-/* Подчеркивание заголовков при наведении */
-h2:hover, h3:hover {
-  position: relative;
-}
-
-h2:hover:after, h3:hover:after {
-  content: '';
-  display: block;
-  height: 2px;
-  width: 0;
-  background-color: #b22222;
-  transition: width 0.5s ease;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  animation: underline 0.5s forwards;
-}
-
-@keyframes underline {
-  to {
-    width: 100%;
-  }
-}
-
-/* Анимация для даты */
-.date {
-  position: relative;
-  overflow: hidden;
-}
-
-.date:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 1px;
-  width: 100%;
-  background-color: #666;
-  transform: translateX(-100%);
-  animation: dateUnderline 1.5s ease forwards;
-  animation-delay: 1s;
-}
-
-@keyframes dateUnderline {
-  to {
-    transform: translateX(0);
-  }
-}/* Анимация фона для блока intro */
-.intro {
-  position: relative;
-  overflow: hidden;
-}
-
-.intro:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(178, 34, 34, 0.05), transparent);
-  animation: introGlow 5s infinite;
-}
-
-@keyframes introGlow {
-  0% { left: -100%; }
-  50% { left: 100%; }
-  100% { left: -100%; }
-}
-
-/* Анимированные числа в тех. спецификациях */
-.tech-specs .important-fact {
-  counter-increment: count;
-  animation: countUp 2s forwards;
-}
-
-@keyframes countUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}  
-#testContainer {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
     </style>
 </head>
 <body>
-    <h1>Невидимый фронт: радиоэлектроника в Великой Отечественной войне</h1>
-    
-    <div class="intro">
-        <p>Великая Отечественная война 1941–1945 гг. стала переломным моментом в истории военных технологий. Одной из ключевых областей, где удалось добиться значительных успехов, несмотря на тяжелейшие условия, стала радиоэлектроника. Эта сфера не только повысила эффективность действий Красной Армии, но и заложила фундамент для послевоенного технологического рывка.</p>
+
+    <!-- Меню слева -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h2>Меню MS Word</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="active" onclick="showTab('tab-file')">Файл</li>
+            <li onclick="showTab('tab-home')">Главная</li>
+            <li onclick="showTab('tab-insert')">Вставка</li>
+            <li onclick="showTab('tab-design')">Дизайн</li>
+            <li onclick="showTab('tab-layout')">Макет</li>
+            <li onclick="showTab('tab-references')">Ссылки</li>
+            <li onclick="showTab('tab-mailings')">Рассылки</li>
+            <li onclick="showTab('tab-review')">Рецензирование</li>
+            <li onclick="showTab('tab-view')">Вид</li>
+        </ul>
+    </nav>
+
+    <!-- Основной контент -->
+    <div id="content-wrapper">
+
+        <!-- ================= ФАЙЛ ================= -->
+        <section id="tab-file" class="tab-content active">
+            <h1>Вкладка «Файл»</h1>
+
+            <div class="img-placeholder">
+                <img src="images/image_1.png" alt="Иллюстрация 1">
+                <span class="caption">Рис. 1. Чтобы открыть Backstage (вкладку «Файл»), нажмите кнопку File в левом верхнем углу Word.</span>
+            </div>
+
+            <h2>Карта всех команд вкладки «Файл»</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_2.png" alt="Иллюстрация 2">
+                <span class="caption">Рис. 2. Полная карта левого меню Backstage в Word (интерфейс Office 2019/2020).</span>
+            </div>
+
+            <ul>
+                <li>1 — Вернуться в документ (стрелка назад)</li>
+                <li>2 — Info</li>
+                <li>3 — New</li>
+                <li>4 — Open</li>
+                <li>5 — Save</li>
+                <li>6 — Save As</li>
+                <li>7 — Print</li>
+                <li>8 — Share</li>
+                <li>9 — Export</li>
+                <li>10 — Close</li>
+                <li>11 — Account</li>
+                <li>12 — Feedback</li>
+                <li>13 — Options</li>
+            </ul>
+
+            <h3>1) Info — информация и защита документа</h3>
+            <p>Показывает свойства документа, инструменты защиты, проверки и управления версиями/восстановлением.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_3.png" alt="Иллюстрация 3">
+                <span class="caption">Рис. 3. Нажмите пункт Info.</span>
+            </div>
+
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>Откройте File → Info.</li>
+                <li>Проверьте свойства файла: автор, размер, дата изменения.</li>
+                <li>Используйте Protect Document для ограничения доступа (например, пароль или запрет редактирования).</li>
+                <li>Используйте Inspect Document, если нужно удалить личные данные перед отправкой.</li>
+                <li>Если Word завершился некорректно, проверьте восстановленные версии в блоке управления документом.</li>
+            </ul>
+
+            <h3>2) New — создание нового документа</h3>
+            <p>Создаёт новый пустой документ или документ по шаблону.</p>
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>Откройте File → New.</li>
+                <li>Выберите Blank document для чистого документа.</li>
+                <li>Либо выберите шаблон (резюме, отчёт, письмо и т.д.).</li>
+                <li>При необходимости используйте поиск шаблонов в верхней части окна.</li>
+            </ul>
+
+            <div class="img-placeholder">
+                <img src="images/image_4.png" alt="Иллюстрация 4">
+                <span class="caption">Рис. 5. Стартовая страница Word: быстрый выбор шаблона или пустого документа.</span>
+            </div>
+
+            <h3>3) Open — открытие существующего файла</h3>
+            <p>Открывает недавние документы, файлы с OneDrive/SharePoint или локального диска.</p>
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>Откройте File → Open.</li>
+                <li>Выберите файл из списка Recent.</li>
+                <li>Если файла нет в списке — нажмите Browse и найдите документ в папке.</li>
+                <li>Используйте закрепление (pin), чтобы важные файлы всегда были сверху списка Recent.</li>
+            </ul>
+
+            <h3>4) Save — быстрое сохранение</h3>
+            <p>Сохраняет текущие изменения в том же файле и в том же месте.</p>
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>Во время работы нажимайте Ctrl+S регулярно (лучше каждые 2–5 минут).</li>
+                <li>Если документ уже сохранялся, Save просто обновляет этот же файл.</li>
+                <li>Если документ новый и ещё без имени — Word предложит окно выбора имени и места (фактически Save As).</li>
+            </ul>
+
+            <h3>5) Save As — сохранение под новым именем/в новом месте</h3>
+            <p>Создаёт отдельную копию документа: с новым именем, форматом или расположением.</p>
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>Откройте File → Save As (или клавишу F12).</li>
+                <li>Выберите место (OneDrive, This PC, нужную папку).</li>
+                <li>Введите новое имя файла.</li>
+                <li>При необходимости смените тип файла (например, DOCX → DOC/RTF/PDF).</li>
+                <li>Подтвердите сохранение.</li>
+            </ul>
+
+            <div class="img-placeholder">
+                <img src="images/image_5.png" alt="Иллюстрация 5">
+                <span class="caption">Рис. 10. Окно сохранения: можно выбрать локацию и сделать её локацией по умолчанию.</span>
+            </div>
+
+            <h3>6) Print — печать и предпросмотр</h3>
+            <p>Позволяет выбрать принтер, диапазон страниц, ориентацию, двустороннюю печать и увидеть предпросмотр.</p>
+            <p><b>Как использовать (пошагово):</b></p>
+            <ul>
+                <li>Откройте File → Print (или Ctrl+P).</li>
+                <li>Проверьте выбранный принтер и число копий.</li>
+                <li>В блоке Settings задайте: какие страницы печатать, ориентацию, двустороннюю печать, размер бумаги.</li>
+                <li>Перед запуском обязательно просмотрите страницы справа в окне предпросмотра.</li>
+                <li>Нажмите Print только после визуальной проверки макета.</li>
+            </ul>
+
+            <h3>7) Share — совместная работа и отправка</h3>
+            <p>Даёт инструменты передачи документа другим пользователям (ссылка, приглашение, отправка копии — зависит от сборки и аккаунта).</p>
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>Откройте File → Share.</li>
+                <li>Выберите способ: поделиться ссылкой или отправить копию.</li>
+                <li>Задайте права доступа (только просмотр или редактирование).</li>
+                <li>Отправьте документ конкретным адресатам.</li>
+            </ul>
+
+            <h3>8) Export — экспорт в другие форматы</h3>
+            <p>Экспортирует документ в PDF/XPS и позволяет изменить тип файла.</p>
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>Откройте File → Export.</li>
+                <li>Выберите Create PDF/XPS, если нужен «неизменяемый» вариант для сдачи.</li>
+                <li>Либо выберите изменение типа файла, если нужен старый формат (например, .doc).</li>
+                <li>Проверьте итоговый файл после экспорта (открывается ли и корректно ли выглядит).</li>
+            </ul>
+
+            <h3>9) Close и возврат в документ</h3>
+            <p>Close закрывает текущий документ, но само приложение Word может остаться открытым.</p>
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>Если нужно закрыть только документ — используйте File → Close.</li>
+                <li>Если нужно просто выйти из Backstage обратно к тексту — нажмите стрелку назад в левом верхнем углу.</li>
+                <li>Если документ не сохранён, Word запросит подтверждение сохранения.</li>
+            </ul>
+
+            <h3>10) Account / Feedback / Options</h3>
+            <p>Account — управляет учётной записью и подключёнными облачными сервисами; Feedback — отправляет отзыв команде Microsoft; Options — открывает все основные параметры Word.</p>
+            <p><b>Как использовать:</b></p>
+            <ul>
+                <li>В Account проверьте, под каким аккаунтом вы вошли, и доступно ли облако OneDrive.</li>
+                <li>В Feedback можно отправлять сообщения о проблемах интерфейса или предложениях.</li>
+                <li>В Options: в разделе Save настройте автосохранение и путь по умолчанию; в Proofing проверьте параметры орфографии и грамматики; в Language задайте языки редактирования.</li>
+            </ul>
+
+            <h3>Полезные горячие клавиши</h3>
+            <ul>
+                <li>Alt+F — открыть вкладку «Файл» (Backstage).</li>
+                <li>Ctrl+S — сохранить изменения.</li>
+                <li>F12 — Save As (сохранить копию/в другое место).</li>
+                <li>Ctrl+P — печать и предпросмотр.</li>
+                <li>Esc — выход из некоторых диалогов/режимов.</li>
+                <li>Alt+F4 — закрыть окно приложения.</li>
+            </ul>
+        </section>
+
+
+        <!-- ================= ГЛАВНАЯ ================= -->
+        <section id="tab-home" class="tab-content">
+            <h1>Вкладка «Главная»</h1>
+            <h2>1 Введение</h2>
+            <p>Вкладка «Главная» в Microsoft Word — это основной командный центр для ежедневного редактирования и форматирования текста. На ней собраны наиболее часто используемые инструменты, логически сгруппированные в пять основных блоков, расположенных в верхней части документа: Буфер обмена, Шрифт, Абзац, Стили и Редактирование.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_6.png" alt="Иллюстрация 6">
+                <span class="caption">Рис. 1. Основные блоки</span>
+            </div>
+
+            <h2>1.1 Буфер обмена</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_7.png" alt="Иллюстрация 7">
+                <span class="caption">Рис. 2. Буфер обмена</span>
+            </div>
+
+            <p>Эта группа отвечает за базовые операции по перемещению и копированию контента.</p>
+            <ul>
+                <li><b>Вставить (Ctrl + V)</b>: Добавляет содержимое из буфера обмена. Кнопка имеет выпадающее меню с параметрами вставки: сохранить исходное форматирование, объединить форматирование или оставить только текст.</li>
+                <li><b>Вырезать (Ctrl + X)</b>: Удаляет выделенный фрагмент из документа, перемещая его в буфер обмена.</li>
+                <li><b>Копировать (Ctrl + C)</b>: Создает копию выделенного фрагмента в буфере обмена.</li>
+                <li><b>Формат по образцу (Ctrl + Shift + C)</b>: Инструмент с иконкой кисточки. Копирует оформление выделенного текста (шрифт, цвет, интервалы) и применяет его к другому фрагменту. Для однократного применения нужно кликнуть один раз, для многократного — дважды.</li>
+                <li><b>Диалоговое окно «Буфер обмена»</b>: При нажатии квадратика в нижнем левом углу блока «Буфер обмена» открывается панель, где хранится до 24 скопированных элементов, доступных для вставки в любой момент.</li>
+            </ul>
+
+            <div class="img-placeholder">
+                <img src="images/image_8.png" alt="Иллюстрация 8">
+                <span class="caption">Рис. 3. Диалоговое окно «Буфер обмена»</span>
+            </div>
+
+            <h2>1.2 Шрифт</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_9.png" alt="Иллюстрация 9">
+                <span class="caption">Рис. 4. Шрифт</span>
+            </div>
+
+            <p>Здесь собраны все инструменты для управления внешним видом символов.</p>
+            <ol>
+                <li><b>Тип и размер шрифта</b>: Выбор гарнитуры и кегля из выпадающих списков или ввод вручную.</li>
+                <li><b>Увеличение / Уменьшение размера</b>: Быстрая настройка кегля с заданным шагом.</li>
+                <li><b>Регистр (Aa)</b>: Изменение регистра выделенного текста (все строчные, ВСЕ ПРОПИСНЫЕ, Начинать С Прописных и т.д.).</li>
+                <li><b>Очистить формат</b>: Удаляет всё применённое оформление, возвращая текст к стилю «Обычный».</li>
+                <li><b>Начертание</b>: Полужирный (Ctrl + B), Курсив (Ctrl + I), Подчёркнутый (Ctrl + U).</li>
+                <li><b>Зачёркивание</b>: Применяет перечёркивание текста.</li>
+                <li><b>Подстрочный / Надстрочный</b>: Создание нижних и верхних индексов.</li>
+                <li><b>Текстовые эффекты и оформление</b>: Добавление теней, свечения, контура и отражения для создания художественных заголовков.</li>
+                <li><b>Цвет выделения и текста</b>: Заливка фона маркером и изменение цвета букв.</li>
+                <li><b>Диалоговое окно «Шрифт» (Ctrl + D)</b>: Открывает расширенные настройки, включая вкладку «Дополнительно» для управления межзнаковым интервалом и кернингом.</li>
+            </ol>
+
+            <div class="img-placeholder">
+                <img src="images/image_10.png" alt="Иллюстрация 10">
+                <span class="caption">Рис. 5. Диалоговое окно «Шрифт»</span>
+            </div>
+
+            <h2>1.3 Абзац</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_11.png" alt="Иллюстрация 11">
+                <span class="caption">Рис. 6. Абзац</span>
+            </div>
+
+            <p>Инструменты этой группы управляют структурой и позиционированием целых абзацев.</p>
+            <ol>
+                <li><b>Маркеры, Нумерация, Многоуровневый список</b>: Создание визуальных перечней. Многоуровневый список критически важен для создания юридических или иерархических структур документов.</li>
+                <li><b>Уменьшить / Увеличить отступ</b>: Смещение текста от левого поля. Работает в паре с клавишей Tab (увеличить) и Shift + Tab (уменьшить).</li>
+                <li><b>Сортировка</b>: Упорядочивание выделенных абзацев или строк таблицы по алфавиту (А-Я) или по значению.</li>
+                <li><b>Отобразить все знаки (¶)</b>: Включение режима непечатаемых символов. Показывает пробелы, концы абзацев и табуляцию.</li>
+                <li><b>Выравнивание</b>: По левому краю (Ctrl + L), По центру (Ctrl + E), По правому краю (Ctrl + R), По ширине (Ctrl + J).</li>
+                <li><b>Междустрочный интервал</b>: Настройка расстояния между строками внутри абзаца.</li>
+                <li><b>Заливка и Границы</b>: Фоновая подложка для текста и создание рамок вокруг абзаца или страницы.</li>
+                <li><b>Диалоговое окно «Абзац»</b>: Центр тонких настроек. Здесь задаются точные отступы, интервалы и управление висячими строками.</li>
+            </ol>
+
+            <div class="img-placeholder">
+                <img src="images/image_12.png" alt="Иллюстрация 12">
+                <span class="caption">Рис. 7. Диалоговое окно «Абзац»</span>
+            </div>
+
+            <h2>1.4 Стили</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_13.png" alt="Иллюстрация 13">
+                <span class="caption">Рис. 8. Стили</span>
+            </div>
+
+            <p>Галерея предустановленных комбинаций форматирования. Вместо ручной установки шрифта 14pt, полужирного начертания и цвета, достаточно применить стиль «Заголовок 1».</p>
+            <p><b>Ключевая особенность:</b> Использование стилей — это не просто оформление, это создание структуры документа. Только текст, оформленный стилями «Заголовок», может быть автоматически собран в Оглавление на вкладке «Ссылки». Без стилей навигация по большому документу и его автосборка невозможны.</p>
+
+            <h2>1.5 Редактирование</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_14.png" alt="Иллюстрация 14">
+                <span class="caption">Рис. 9. Редактирование</span>
+            </div>
+
+            <p>Функции поиска и замены информации в масштабах всего документа.</p>
+            <ol>
+                <li><b>Найти (Ctrl + F)</b>: Открывает панель навигации для поиска слов или фраз в тексте.</li>
+                <li><b>Заменить (Ctrl + H)</b>: Массовая замена одного текста на другой. Например, замена двойных пробелов на одинарные или смена фамилии во всём договоре.</li>
+                <li><b>Выделить</b>: Быстрое выделение всего текста документа (Ctrl + A) или объектов определённого типа.</li>
+            </ol>
+
+            <h2>2 Буфер обмена (Расширенно)</h2>
+            <h3>2.1 Вставка с настройками</h3>
+            <p>Просто нажать Ctrl + V или верхнюю половину кнопки — это быстрый способ. Но у него есть нюансы. Для точного контроля нужно использовать нижнюю половину кнопки «Вставить» (стрелочка под ней).</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_15.png" alt="Иллюстрация 15">
+                <span class="caption">Рис. 10. Окно «Вставить»</span>
+            </div>
+
+            <p><b>Что можно сделать:</b></p>
+            <ol>
+                <li><b>Сохранить исходное форматирование</b>: Текст вставится точно таким же шрифтом и размером, как в источнике.</li>
+                <li><b>Объединить форматирование</b>: Word подстроит вставляемый текст под шрифт и размер текущего абзаца, но сохранит выделение жирным/курсивом.</li>
+                <li><b>Сохранить только текст</b> (Кнопка с буквой A и кисточкой): Удаляет всё форматирование (цвета, таблицы, ссылки, картинки). Получается «чистый» текст.</li>
+                <li><b>Специальная вставка</b>: Открывает окно с выбором формата.</li>
+            </ol>
+
+            <h3>2.2 Формат по образцу</h3>
+            <p>Инструмент с иконкой кисточки (Ctrl+Shift+C для копирования стиля, Ctrl+Shift+V для вставки) позволяет скопировать всё оформление: шрифт, отступы, цвет, межстрочный интервал — и перенести на другой текст.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_16.png" alt="Иллюстрация 16">
+                <span class="caption">Рис. 11. Кисточка</span>
+            </div>
+
+            <h3>2.3 Расширенный Буфер обмена</h3>
+            <p>Это хранилище, которое помнит до 24 последних скопированных фрагментов (текст, картинки, скриншоты). Оно работает поверх всех программ Office.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_17.png" alt="Иллюстрация 17">
+                <span class="caption">Рис. 12. Расширенный буфер обмена</span>
+            </div>
+
+            <h2>3 Шрифт (Дополнительно)</h2>
+            <p>Вкладка «Дополнительно» (Межзнаковый интервал): Это самая важная часть для верстальщика и дизайнера. Позволяет настраивать масштаб, интервал (разреженный/уплотненный) и смещение текста.</p>
+
+            <h2>4 Абзац (Дополнительно)</h2>
+            <p>Работа со значком абзаца (¶) и расширенные функции выравнивания и заливки.</p>
+
+            <h2>5 Стили (Расширенно)</h2>
+            <h3>5.1 Галерея стилей</h3>
+            <p>На ленте вы видите набор цветных плиток («Обычный», «Без интервала», «Заголовок 1» и т.д.). Это галерея экспресс-стилей.</p>
+
+            <h3>5.2 Кнопки «Открыть галерею» и «Панель стилей»</h3>
+            <p>Галерея на ленте показывает лишь малую часть доступных стилей. Чтобы увидеть всё богатство выбора, нужно открыть полную панель.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_18.png" alt="Иллюстрация 18">
+                <span class="caption">Рис. 13. Диалоговое окно «Стили»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_19.png" alt="Иллюстрация 19">
+                <span class="caption">Рис. 14. «Все стили»</span>
+            </div>
+
+            <h3>5.3 Создание и изменение стиля</h3>
+            <p>Пошаговая инструкция создания нового стиля:</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_20.png" alt="Иллюстрация 20">
+                <span class="caption">Рис. 15. «Создать стиль»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_21.png" alt="Иллюстрация 21">
+                <span class="caption">Рис. 16 «Изменить»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_22.png" alt="Иллюстрация 22">
+                <span class="caption">Рис. 17. «Формат»</span>
+            </div>
+
+            <h3>5.4 Обновление стиля по образцу</h3>
+            <p>Это способ «научить» Word новому виду старого стиля без копания в меню.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_23.png" alt="Иллюстрация 23">
+                <span class="caption">Рис. 18. «Обновить в соответствии с выделенным фрагментом»</span>
+            </div>
+
+            <h2>6 Редактирование (Расширенно)</h2>
+            <h3>6.1 Кнопка «Найти»</h3>
+            <p>В современных версиях Word это целая панель навигации.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_24.png" alt="Иллюстрация 24">
+                <span class="caption">Рис. 19. «Навигация»</span>
+            </div>
+
+            <h3>6.2 Кнопка «Заменить»</h3>
+            <p>Массовая замена текста и оформления.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_25.png" alt="Иллюстрация 25">
+                <span class="caption">Рис. 20. Диалоговое окно «Найти и заменить»</span>
+            </div>
+
+            <h3>6.3 Кнопка «Выделить»</h3>
+            <p>Имеет два режима работы: Выделить всё и Выбор объектов (Секретное оружие для работы с графикой).</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_26.png" alt="Иллюстрация 26">
+                <span class="caption">Рис. 21. «Выделить»</span>
+            </div>
+        </section>
+
+
+        <!-- ================= ВСТАВКА ================= -->
+        <section id="tab-insert" class="tab-content">
+            <h1>Вкладка «Вставка»</h1>
+            <h2>1 Введение</h2>
+            <p>Вкладка «Вставка» — это главное место в Word, где добавляются новые объекты в документ: от таблиц и картинок до формул и колонтитулов. В отличие от вкладки «Главная» (где вы форматируете существующий текст), здесь вы расширяете документ новыми элементами.</p>
+            <p><b>Ключевая идея:</b> если чего-то нет в документе, но нужно добавить — идите на вкладку «Вставка».</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_27.png" alt="Иллюстрация 27">
+                <span class="caption">Рис. 1. Основные блоки</span>
+            </div>
+
+            <h2>2 Страницы</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_28.png" alt="Иллюстрация 28">
+                <span class="caption">Рис. 2. Страницы</span>
+            </div>
+
+            <h3>2.1 Титульная страница</h3>
+            <p>Вставляет готовый, красиво оформленный титульный лист (с рамками, полями для заголовка, автора, даты). Скрытая возможность: После вставки титульной страницы Word автоматически нумерует основную часть документа с 1, не затрагивая титул.</p>
+
+            <h3>2.2 Пустая страница</h3>
+            <p>Вставляет разрыв страницы + новый пустой абзац в месте курсора. При вставке пустой страницы форматирование не «плывёт» при последующем редактировании.</p>
+
+            <h3>2.3 Разрыв страницы</h3>
+            <p>Перемещает весь текст, стоящий после курсора, на новую страницу. Используется перед новой главой, приложением, или когда нужно принудительно начать текст на чистом листе. (Горячая клавиша: Ctrl + Enter).</p>
+
+            <h2>3 Таблицы</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_29.png" alt="Иллюстрация 29">
+                <span class="caption">Рис. 3. Таблицы</span>
+            </div>
+
+            <p>Это один из самых мощных инструментов в Word. 4 способа вставки:</p>
+            <ul>
+                <li><b>Сеткой</b> — навести мышкой на нужное количество ячеек (например, 5×3).</li>
+                <li><b>Вставить таблицу</b> — задать точное число строк и столбцов, ширину столбцов.</li>
+                <li><b>Нарисовать таблицу</b> — карандашом нарисовать любую сложную структуру.</li>
+                <li><b>Excel-таблица</b> — вставляет лист Excel внутрь Word (двойной клик — открывается Excel).</li>
+            </ul>
+
+            <div class="img-placeholder">
+                <img src="images/image_30.png" alt="Иллюстрация 30">
+                <span class="caption">Рис. 4. Вставка таблицы</span>
+            </div>
+
+            <h2>4 Иллюстрации</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_31.png" alt="Иллюстрация 31">
+                <span class="caption">Рис. 4. Иллюстрации</span>
+            </div>
+
+            <p>Это сердце визуального контента в Word.</p>
+
+            <h3>4.1 Рисунки</h3>
+            <p>Вставляет изображение с вашего компьютера (Форматы: JPG, PNG, GIF, SVG, BMP). После вставки появляется вкладка «Формат рисунка» → можно обрезать, добавить тень, рамку.</p>
+
+            <h3>4.2 Фигуры</h3>
+            <p>Рисует линии, прямоугольники, стрелки, блок-схемы, выноски.</p>
+            <ul>
+                <li>Нажмите Shift во время рисования → получите идеальный круг или квадрат.</li>
+                <li>Дважды кликните на готовую фигуру → можно добавить текст внутрь фигуры.</li>
+            </ul>
+
+            <div class="img-placeholder">
+                <img src="images/image_32.png" alt="Иллюстрация 32">
+                <span class="caption">Рис. 5. Фигуры</span>
+            </div>
+
+            <h3>4.3 SmartArt</h3>
+            <p>Превращает скучные списки в визуальные схемы: Иерархия, Процесс, Цикл, Матрица, Пирамида.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_33.png" alt="Иллюстрация 33">
+                <span class="caption">Рис. 6. SmartArt</span>
+            </div>
+
+            <h3>4.4 Диаграмма</h3>
+            <p>Вставляет график, гистограмму, круговую диаграмму, линейчатую диаграмму. Важно: Автоматически открывается маленький Excel → вы меняете числа там → диаграмма в Word обновляется сама.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_34.png" alt="Иллюстрация 34">
+                <span class="caption">Рис. 7. Вставка диаграммы</span>
+            </div>
+
+            <h3>4.5 Снимок экрана</h3>
+            <p>Делает скриншот открытого окна или выделенной области.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_35.png" alt="Иллюстрация 35">
+                <span class="caption">Рис. 8. Вырезка экрана</span>
+            </div>
+
+            <h2>5 Текст</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_36.png" alt="Иллюстрация 36">
+                <span class="caption">Рис. 9. Стили</span>
+            </div>
+
+            <h3>5.1 Надпись</h3>
+            <p>Создаёт плавающий текстовый блок, который можно перетаскивать куда угодно. Идеально для: подписей к рисункам, вставки «Важно!», боковых заметок.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_37.png" alt="Иллюстрация 37">
+                <span class="caption">Рис. 10. Добавление надписи</span>
+            </div>
+
+            <h3>5.2 Экспресс-блоки</h3>
+            <p>Сохраняет любой фрагмент текста/таблицы/рисунка как готовый шаблон, чтобы вставить в один клик позже.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_38.png" alt="Иллюстрация 38">
+                <span class="caption">Рис. 11. Экспресс-блоки</span>
+            </div>
+
+            <h3>5.3 WordArt</h3>
+            <p>Создаёт эффектный заголовок с тенью, наклоном, обводкой, объёмом. WordArt — это графический объект, его можно вращать, растягивать, накладывать на картинку.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_39.png" alt="Иллюстрация 39">
+                <span class="caption">Рис. 12. WordArt</span>
+            </div>
+
+            <h2>6 Колонтитулы</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_40.png" alt="Иллюстрация 40">
+                <span class="caption">Рис. 13. Колонтитулы</span>
+            </div>
+
+            <p>Редактирует верхний и нижний колонтитулы (информация, повторяющаяся на каждой странице: номер страницы, название, логотип, дата).</p>
+
+            <h2>7 Символы</h2>
+
+            <div class="img-placeholder">
+                <img src="images/image_41.png" alt="Иллюстрация 41">
+                <span class="caption">Рис. 17. Символы</span>
+            </div>
+
+            <h3>7.1 Символ</h3>
+            <p>Добавляет знаки, которых нет на клавиатуре (©, ®, ™, €, математические символы).</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_42.png" alt="Иллюстрация 42">
+                <span class="caption">Рис. 18. Символ</span>
+            </div>
+
+            <h3>7.2 Уравнение</h3>
+            <p>Позволяет красиво записывать математические формулы (дроби, интегралы, матрицы, корни). Горячая клавиша: Alt + =.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_43.png" alt="Иллюстрация 43">
+                <span class="caption">Рис. 19. Уравнение</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_44.png" alt="Иллюстрация 44">
+                <span class="caption">Рис. 20. Конструктор уравнений</span>
+            </div>
+
+        </section>
+
+
+        <!-- ================= ДИЗАЙН ================= -->
+        <section id="tab-design" class="tab-content">
+            <h1>Вкладка «Дизайн» (Конструктор)</h1>
+            <h2>1. Введение</h2>
+            <p>Вкладка «Дизайн» (в некоторых версиях «Конструктор») отвечает за общее визуальное оформление всего документа на высоком уровне. С её помощью задаются: единый стиль заголовков и основного текста, цветовую гамму и шрифты, фон, водяные знаки, границы страниц, согласованность всей структуры документа.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_45.png" alt="Иллюстрация 45">
+                <span class="caption">Рис. 1. Основные блоки</span>
+            </div>
+
+            <h2>2. Группа «Форматирование документа»</h2>
+            <h3>2.1 Темы</h3>
+            <p>Кнопка «Темы» применяет к документу единый комплект настроек оформления: цветовую схему, парные шрифты, эффекты для фигур и набор стилей. Можно восстановить тему шаблона.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_46.png" alt="Иллюстрация 46">
+                <span class="caption">Рис. 2. Темы</span>
+            </div>
+
+            <h3>2.2 Наборы стилей</h3>
+            <p>Выпадающая галерея с готовыми шаблонами (например, «Деловой», «Простой»). При наведении документ мгновенно меняет внешний вид. Позволяют изменять визуальное оформление стилей абзацев и символов.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_47.png" alt="Иллюстрация 47">
+                <span class="caption">Рис. 3. Набор стилей</span>
+            </div>
+
+            <h3>2.3 Цвета</h3>
+            <p>Открывает наборы из 6–10 цветов. Меняет цветовую схему темы, что влияет на цвет текста, заливки таблиц и гиперссылок.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_48.png" alt="Иллюстрация 48">
+                <span class="caption">Рис. 4. Набор стилей</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_49.png" alt="Иллюстрация 49">
+                <span class="caption">Рис. 5. Окно создания новых цветов темы</span>
+            </div>
+
+            <h3>2.4 Шрифты</h3>
+            <p>Меняет парный набор шрифтов темы (шрифт для заголовков и шрифт для основного текста).</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_50.png" alt="Иллюстрация 50">
+                <span class="caption">Рис. 6. Вкладка «Шрифты»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_51.png" alt="Иллюстрация 51">
+                <span class="caption">Рис. 7. Окно создания новых шрифтов темы</span>
+            </div>
+
+            <h3>2.5 Интервалы между абзацами</h3>
+            <p>Меняет вертикальные отступы до и после абзацев, а также межстрочный интервал у всех стилей документа одновременно.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_52.png" alt="Иллюстрация 52">
+                <span class="caption">Рис. 8. Окно выбора интервала между абзацами</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_53.png" alt="Иллюстрация 53">
+                <span class="caption">Рис. 9. Управление стилями, вкладка «По умолчанию»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_54.png" alt="Иллюстрация 54">
+                <span class="caption">Рис. 10. Управление стилями, вкладка «Изменение»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_55.png" alt="Иллюстрация 55">
+                <span class="caption">Рис. 11. Управление стилями, вкладка «Рекомендации»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_56.png" alt="Иллюстрация 56">
+                <span class="caption">Рис. 12. Управление стилями, вкладка «Рекомендации»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_57.png" alt="Иллюстрация 57">
+                <span class="caption">Рис. 13. Инструмент импорта/экспорта стилей</span>
+            </div>
+
+            <h3>2.6 Эффекты</h3>
+            <p>Меняет визуальные эффекты для графических объектов (Тени, Скосы/фаски, Отражение, Заливки градиентов). Не влияет на текст.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_58.png" alt="Иллюстрация 58">
+                <span class="caption">Рис. 14. Окно выбора эффекта</span>
+            </div>
+
+            <h3>2.7 По умолчанию</h3>
+            <p>При нажатии на кнопку изменяет стиль документа по умолчанию для всех новых документов.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_59.png" alt="Иллюстрация 59">
+                <span class="caption">Рис. 15. Окно подтверждения изменения стиля по умолчанию</span>
+            </div>
+
+            <h2>3. Группа «Фон страницы»</h2>
+            <h3>3.1 Подложка</h3>
+            <p>Предоставляет возможность создать на каждом листе документа полупрозрачный водяной знак («Образец», «Черновик»).</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_60.png" alt="Иллюстрация 60">
+                <span class="caption">Рис. 16. Окно выбора подложки</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_61.png" alt="Иллюстрация 61">
+                <span class="caption">Рис. 17. Окно настройки подложки</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_62.png" alt="Иллюстрация 62">
+                <span class="caption">Рис. 18. Окно выбора изображения</span>
+            </div>
+
+            <h3>3.2 Цвет страницы</h3>
+            <p>Заливает фон страницы сплошным цветом, градиентом, текстурой или узором.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_63.png" alt="Иллюстрация 63">
+                <span class="caption">Рис. 19. Палитра цветов страницы</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_64.png" alt="Иллюстрация 64">
+                <span class="caption">Рис. 20. Заранее заготовленные цвета</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_65.png" alt="Иллюстрация 65">
+                <span class="caption">Рис. 21. Ручная настройка цвета</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_66.png" alt="Иллюстрация 66">
+                <span class="caption">Рис. 22. Окно выбора способа заливки, вкладка «Градиентная»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_67.png" alt="Иллюстрация 67">
+                <span class="caption">Рис. 23. Окно выбора способа заливки, вкладка «Текстура»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_68.png" alt="Иллюстрация 68">
+                <span class="caption">Рис. 24. Окно выбора способа заливки, вкладка «Узор»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_69.png" alt="Иллюстрация 69">
+                <span class="caption">Рис. 25. Окно выбора способа заливки, вкладка «Рисунок»</span>
+            </div>
+
+            <h3>3.3 Границы страниц</h3>
+            <p>Добавляет рамку вокруг каждой страницы документа (или вокруг отдельных разделов).</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_70.png" alt="Иллюстрация 70">
+                <span class="caption">Рис. 26. Окно «Границы страниц», вкладка «Граница»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_71.png" alt="Иллюстрация 71">
+                <span class="caption">Рис. 27. Окно «Границы страниц», вкладка «Страница»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_72.png" alt="Иллюстрация 72">
+                <span class="caption">Рис. 28. Окно «Границы страниц», вкладка «Заливка»</span>
+            </div>
+        </section>
+
+
+        <!-- ================= МАКЕТ ================= -->
+        <section id="tab-layout" class="tab-content">
+            <h1>Вкладка «Макет» (Разметка страницы)</h1>
+            <h2>1. Введение</h2>
+            <p>Вкладка «Макет» в Microsoft Word (в некоторых версиях — «Разметка страницы») — это центр управления физическими параметрами документа: полями, ориентацией, колонками, разрывами, а также расположением объектов относительно текста.</p>
+
+            <h3>1.1. Параметры страницы</h3>
+            <p>Эта группа отвечает за глобальную геометрию листа: от полей до разбивки на колонки.</p>
+
+            <h3>1.2. Абзац</h3>
+            <p>Здесь представлены точные настройки отступов и интервалов между абзацами.</p>
+
+            <h3>1.3. Упорядочение</h3>
+            <p>Инструменты для работы с плавающими объектами: картинками, фигурами, диаграммами. Управление слоями, обтеканием и взаимным расположением.</p>
+
+            <h2>2. Параметры страницы</h2>
+            <h3>2.1. Поля</h3>
+            <p>Поля — это пустое пространство от края листа до текста. По умолчанию Word устанавливает поля: левое — 3 см, остальные — по 2 см. Для тонкой настройки выберите «Настраиваемые поля».</p>
+
+            <h3>2.2. Ориентация</h3>
+            <p>Два режима расположения листа: Книжная (вертикальное) и Альбомная (горизонтальное). Важно: Ориентация применяется ко всему документу или к текущему разделу.</p>
+
+            <h3>2.3. Размер</h3>
+            <p>Выбор формата бумаги для печати. По умолчанию — А4 (210×297 мм).</p>
+
+            <h3>2.4. Колонки</h3>
+            <p>Разбивает выделенный текст на несколько вертикальных столбцов, как в газетах или журналах. Текст перетекает из левой колонки в правую автоматически.</p>
+
+            <h3>2.5. Разрывы</h3>
+            <p>Это самый важный инструмент для профессиональной вёрстки. Никогда не переходите на новую страницу многократным нажатием Enter — используйте разрывы. Разрывы позволяют жёстко разграничивать части документа. Особо важны <b>Разрывы разделов</b>, так как раздел — это часть документа, у которой можно задать свои параметры: поля, ориентацию, колонтитулы, номера страниц.</p>
+
+            <h3>2.6. Номера строк</h3>
+            <p>Автоматическая нумерация строк на полях (не страниц, а именно строк). Очень полезно для юристов, сценаристов, редакторов.</p>
+
+            <h3>2.7. Расстановка переносов</h3>
+            <p>Убирает большие «дырки» (пробелы) между словами при выравнивании текста по ширине, разбивая длинные слова на слоги (режимы: Авто, Нет, Вручную).</p>
+
+            <h3>2.8. Диалоговое окно «Параметры страницы»</h3>
+            <p>Это «центр управления полётами» всей геометрии документа. Настройка переплета, зеркальных полей для двусторонней печати и особых колонтитулов для первой страницы.</p>
+
+            <h2>3. Абзац</h2>
+            <h3>3.1. Отступы</h3>
+            <p>Позволяют задать расстояние от левого и правого поля страницы до абзаца точно в сантиметрах.</p>
+
+            <h3>3.2. Интервалы</h3>
+            <p>Расстояния между абзацами (не путать с межстрочным интервалом). Профессионалы никогда не делают отступы пустыми строками (Enter), потому что при изменении размера шрифта такие пустые строки «поедут». Вместо этого используют настройки интервалов «Перед» и «После».</p>
+
+            <h3>3.3. Диалоговое окно «Абзац»</h3>
+            <p>Вкладка «Положение на странице» критически важна для чистовика: Запрет висячих строк, Не отрывать от следующего (для заголовков), Не разрывать абзац.</p>
+
+            <h2>4. Упорядочение</h2>
+            <p>Эта группа предназначена для работы с объектами: рисунками, фигурами, диаграммами, текстовыми полями.</p>
+            <ul>
+                <li><b>Положение:</b> Быстрая привязка плавающего объекта к определённому месту страницы (углам, центру) с автоматическим обтеканием текстом.</li>
+                <li><b>Обтекание текстом:</b> Настраивает способ взаимодействия текста и объекта (В тексте, Вокруг рамки, По контуру, Сквозь, За текстом, Перед текстом).</li>
+                <li><b>Переместить вперед / На задний план:</b> Управляет слоями объектов (Z-индекс).</li>
+                <li><b>Область выделения:</b> Это «инспектор слоёв», показывающий список всех объектов на текущей странице. Можно скрывать/показывать объекты, переименовывать их и менять порядок наложения.</li>
+                <li><b>Выровнять и Сгруппировать:</b> Объединяет несколько объектов в один составной объект для их совместного перемещения и масштабирования.</li>
+            </ul>
+        </section>
+
+
+        <!-- ================= ССЫЛКИ ================= -->
+        <section id="tab-references" class="tab-content">
+            <h1>Вкладка «Ссылки»</h1>
+
+            <h2>1. Оглавление</h2>
+            <p>Инструменты этой группы позволяют создать автоматическое содержание документа. Для корректной работы необходимо предварительно оформить заголовки с помощью стилей «Заголовок 1», «Заголовок 2» и т.д.</p>
+            <ul>
+                <li><b>Кнопка «Оглавление»:</b> Вставляет в позицию курсора готовый блок содержания. Word сканирует документ и собирает из него список с номерами страниц.</li>
+                <li><b>Кнопка «Добавить текст»:</b> Принудительно включает выделенный абзац в оглавление.</li>
+                <li><b>Кнопка «Обновить таблицу»:</b> Приводит оглавление в соответствие с текущим состоянием документа. Важно нажимать её после редактирования текста.</li>
+            </ul>
+
+            <h2>2. Сноски</h2>
+            <p>Сноски — это примечания, пояснения или ссылки на источники, размещаемые внизу страницы (обычные) либо в конце документа или раздела (концевые).</p>
+            <ul>
+                <li><b>Кнопка «Вставить сноску»:</b> Добавляет надстрочный номер в тексте и перемещает курсор в нижний колонтитул страницы.</li>
+                <li><b>Кнопка «Вставить концевую сноску»:</b> Текст примечания помещает в самый конец документа.</li>
+                <li><b>Диалоговое окно «Сноски»:</b> Расширенные настройки положения и формата номера.</li>
+            </ul>
+
+            <h2>3. Ссылки и списки литературы (Библиография)</h2>
+            <p>Инструменты для управления источниками и автоматического оформления списка литературы в соответствии с выбранным стандартом (ГОСТ, APA, MLA и др.).</p>
+            <ul>
+                <li><b>Кнопка «Управление источниками»:</b> Открывает «Диспетчер источников» — базу данных всей использованной литературы.</li>
+                <li><b>Поле «Стиль»:</b> Выбирает стандарт оформления.</li>
+                <li><b>Кнопка «Вставить ссылку»:</b> Вставляет в текст ссылку на источник в формате, определяемом выбранным стилем.</li>
+                <li><b>Кнопка «Список литературы»:</b> Вставляет автоматически сформированный, отсортированный и оформленный список всех использованных источников.</li>
+            </ul>
+
+            <h2>4. Названия</h2>
+            <p>Группа предназначена для работы с подписями к рисункам, таблицам и формулам, а также для организации перекрёстных ссылок на них.</p>
+            <ul>
+                <li><b>Кнопка «Вставить название»:</b> Добавляет подпись к выделенному объекту (Рисунок 1, Таблица 1).</li>
+                <li><b>Кнопка «Список иллюстраций»:</b> Вставляет перечень всех рисунков и/или таблиц с указанием номеров страниц (аналог оглавления для объектов).</li>
+                <li><b>Кнопка «Перекрестная ссылка»:</b> Создаёт в тексте активную ссылку на другой элемент документа (заголовок, номер рисунка). Ссылка автоматически обновится при нажатии F9.</li>
+            </ul>
+
+            <h2>5. Предметный указатель</h2>
+            <p>Инструменты для создания алфавитного перечня терминов с указанием страниц, на которых они упоминаются (как в конце учебников).</p>
+
+            <h2>6. Таблица ссылок</h2>
+            <p>Специализированный инструмент для создания перечней ссылок на нормативные, юридические или иные документы (законы, регламенты, ГОСТы).</p>
+        </section>
+
+
+        <!-- ================= РАССЫЛКИ ================= -->
+        <section id="tab-mailings" class="tab-content">
+            <h1>Вкладка «Рассылки»</h1>
+            <p>Инструменты этой вкладки превращают Word из простого редактора в систему автоматизации. Они позволяют создать один шаблон (например, приглашение на свадьбу или акт выполненных работ) и автоматически размножить его для 10, 100 или 1000 получателей, подставляя индивидуальные данные из таблицы.</p>
+
+            <h2>1. Создать</h2>
+            <p>Группа предназначена для быстрой подготовки одиночных или серийных почтовых элементов.</p>
+            <ul>
+                <li><b>1.1. Кнопка «Конверты»:</b> Позволяет оформить макет для печати на физическом конверте.</li>
+                <li><b>1.2. Кнопка «Наклейки»:</b> Создает макет для печати на листах с самоклеящимися этикетками.</li>
+            </ul>
+
+            <h2>2. Начало слияния</h2>
+            <p>Инструменты для настройки связи между текстом в Word и внешним источником данных.</p>
+            <ul>
+                <li><b>2.1. Кнопка «Начать слияние»:</b> Выбор формата итогового документа. Рекомендуется использовать Пошаговый мастер слияния.</li>
+                <li><b>2.2. Кнопка «Выбрать получателей»:</b> Подключение базы данных (таблица Excel, контакты Outlook или новый список).</li>
+                <li><b>2.3. Кнопка «Изменить список получателей»:</b> Управление подключенной базой данных (сортировка, фильтрация записей).</li>
+            </ul>
+
+            <h2>3. Составление документа и вставка полей</h2>
+            <p>Группа для расстановки динамических элементов в шаблоне.</p>
+            <ul>
+                <li><b>3.1. Кнопка «Выделить поля слияния»:</b> Подсветка вставленных переменных серым цветом.</li>
+                <li><b>3.2. Кнопка «Блок адреса»:</b> Автоматическая вставка сложной структуры адреса.</li>
+                <li><b>3.3. Кнопка «Строка приветствия»:</b> Умное начало письма (например: «Уважаемый [Имя]!»).</li>
+                <li><b>3.4. Кнопка «Вставить поле слияния»:</b> Ручное добавление данных из колонок вашей таблицы.</li>
+                <li><b>3.5. Кнопка «Правила»:</b> Добавление логики «Если — то — иначе» для настройки подстановки слов в зависимости от значений полей (например, род глагола от пола).</li>
+                <li><b>3.6. Кнопка «Подбор полей»:</b> Стыковка названий столбцов вашей базы с системными полями Word.</li>
+                <li><b>3.7. Кнопка «Обновить наклейки»:</b> Синхронизация дизайна наклеек на листе.</li>
+            </ul>
+
+            <h2>4. Просмотр результатов</h2>
+            <ul>
+                <li><b>4.1. Кнопка «Просмотреть результаты»:</b> Режим «маскировки», где поля превращаются в реальные данные (««Имя»» → «Иван»).</li>
+                <li><b>4.2. Навигация и поиск:</b> Пролистывание базы для проверки верстки.</li>
+                <li><b>4.3. Кнопка «Поиск ошибок»:</b> Диагностика перед печатью.</li>
+            </ul>
+
+            <h2>5. Завершение</h2>
+            <ul>
+                <li><b>5.1. Кнопка «Найти и объединить»:</b> Финальный аккорд процесса. Можно создать новый файл со всеми письмами (для ручной корректировки отдельных документов), распечатать пачку документов или разослать письма через Outlook.</li>
+            </ul>
+        </section>
+
+
+        <!-- ================= РЕЦЕНЗИРОВАНИЕ ================= -->
+        <section id="tab-review" class="tab-content">
+            <h1>Вкладка «Рецензирование»</h1>
+            <p>Раздел «Рецензирование» (англ. «Review») является центральным инструментом для коллективной работы над документами. Он предназначен для отслеживания изменений, добавления комментариев, сравнения разных версий файлов, защиты документа от несанкционированного редактирования, а также для интеграции с системой заметок Microsoft OneNote.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_73.png" alt="Иллюстрация 73">
+                <span class="caption">Рисунок 1 – фрагмент интерфейса от кнопки «Фильтровать всю разметку» до кнопки «Связанные заметки»</span>
+            </div>
+
+            <h2>1. Фильтровать всю разметку</h2>
+            <p>Позволяет временно скрыть с экрана определённые типы изменений, не удаляя их из документа и не отключая режим отслеживания исправлений.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_74.png" alt="Иллюстрация 74">
+                <span class="caption">Рисунок 2 – раскрытое меню «Фильтровать всю разметку»</span>
+            </div>
+
+            <h2>2. Все исправления / Показать исправления</h2>
+            <p>Эти две команды работают в связке и управляют тем, как именно Word отображает внесённые изменения (вставленный текст, удалённый текст, форматирование, перемещения).</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_75.png" alt="Иллюстрация 75">
+                <span class="caption">Рисунок 3 – выпадающее меню «Все исправления»</span>
+            </div>
+
+            <div class="img-placeholder">
+                <img src="images/image_76.png" alt="Иллюстрация 76">
+                <span class="caption">Рисунок 4 – выпадающее меню «Показать исправления»</span>
+            </div>
+
+            <h2>3. Запись исправлений (Отслеживание изменений)</h2>
+            <p>Команда «Запись исправлений» (Track Changes) является главным инструментом рецензирования. Когда этот режим включён, Word фиксирует абсолютно все изменения, которые вносит пользователь в документ.</p>
+            <p><b>Важное предупреждение:</b> Если выключить «Запись исправлений» и начать править документ, Word не запомнит, что и когда вы меняли. Отключение режима не удаляет уже сделанные правки – они остаются в документе.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_77.png" alt="Иллюстрация 77">
+                <span class="caption">Рисунок 5 – активная кнопка «Запись исправлений» и пример документа с видимыми правками</span>
+            </div>
+
+            <h2>4. Сравнить исправления / Сравнение</h2>
+            <p>Предназначена для ситуаций, когда у вас есть две версии одного документа, но вы не знаете, какие именно изменения были сделаны. Word последовательно анализирует исходный и изменённый документы и создаёт третий результирующий файл с правками.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_78.png" alt="Иллюстрация 78">
+                <span class="caption">Рисунок 6 – диалоговое окно «Сравнение версий» с двумя полями для выбора документов</span>
+            </div>
+
+            <h2>5. Защитить</h2>
+            <p>Команда «Защитить» (Protect) устанавливает ограничения на редактирование документа (Только чтение, Только примечания, Отслеживание исправлений). <b>Критическое предупреждение:</b> Word не имеет механизма восстановления утерянного пароля!</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_79.png" alt="Иллюстрация 79">
+                <span class="caption">Рисунок 7 – боковая панель «Ограничить редактирование» с выбором типа защиты</span>
+            </div>
+
+            <h2>6. Скрыть рукописные фрагменты</h2>
+            <p>Команда «Скрыть рукописные фрагменты» (Hide Ink) относится к устройствам с сенсорным вводом. Временно скрывает рисунки пером поверх текста, возвращая документ к чистому виду.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_80.png" alt="Иллюстрация 80">
+                <span class="caption">Рисунок 8 – пример документа: слева с видимыми рукописными пометками, справа – после нажатия «Скрыть рукописные фрагменты»</span>
+            </div>
+
+            <h2>7. Связанные заметки (OneNote)</h2>
+            <p>Обеспечивает интеграцию между Microsoft Word и приложением Microsoft OneNote. Создаёт динамическую связь между фрагментом документа и страницей заметок.</p>
+
+            <div class="img-placeholder">
+                <img src="images/image_81.png" alt="Иллюстрация 81">
+                <span class="caption">Рисунок 9 – боковая панель OneNote с открытой привязкой к документу Word</span>
+            </div>
+        </section>
+
+
+        <!-- ================= ВИД ================= -->
+        <section id="tab-view" class="tab-content">
+            <h1>Вкладка «Вид»</h1>
+            <h2>Введение</h2>
+            <p>Вкладка «Вид» в Microsoft Word — это центр управления тем, как документ отображается на экране. В отличие от вкладки «Макет», которая меняет физические параметры страницы, «Вид» влияет исключительно на удобство работы пользователя: режим просмотра, масштаб, показ вспомогательных элементов интерфейса, способ прокрутки и организацию окон.</p>
+
+            <h2>1. Режимы просмотра</h2>
+            <ul>
+                <li><b>1.1. Разметка страницы:</b> Режим по умолчанию. Документ отображается так, как он будет выглядеть на печати.</li>
+                <li><b>1.2. Веб-документ:</b> Показывает, как документ будет выглядеть, если его сохранить как веб-страницу (сплошной непрерывной лентой без полей).</li>
+                <li><b>1.3. Черновик:</b> Минималистичный режим. Отображается только текст. Полезно для работы с очень большими файлами (режим экономит ресурсы ПК).</li>
+                <li><b>1.4. Режим чтения:</b> Полноэкранный режим для чтения с экрана, страницы перелистываются по горизонтали, лента скрыта.</li>
+            </ul>
+
+            <h2>2. Иммерсивный режим</h2>
+            <p>Специальный инструмент для повышения читабельности и доступности текста. Настройки включают: Ширина столбца, Цвет страницы (сепия, темный), Фокус строки (затемняет остальной текст), Интервал текста, Слоги, Читать вслух (голосовое озвучивание).</p>
+
+            <h2>3. Перемещение между страницами</h2>
+            <ul>
+                <li><b>3.1. Навигация по вертикали:</b> Стандартная непрерывная лента.</li>
+                <li><b>3.2. По горизонтали:</b> Страницы располагаются рядом и перелистываются слева направо (удобно на планшетах).</li>
+            </ul>
+
+            <h2>4. Отображение</h2>
+            <ul>
+                <li><b>4.1. Линейка:</b> Включает горизонтальную и вертикальную линейки для регулировки отступов (красной строки).</li>
+                <li><b>4.2. Сетка:</b> Координатная сетка на листе (как миллиметровка) для выравнивания фигур.</li>
+                <li><b>4.3. Область навигации:</b> Вертикальная панель слева. Содержит 3 вкладки: Заголовки (структура для быстрого перехода и перемещения целых глав), Страницы (миниатюры) и Результаты (поиск).</li>
+                <li><b>4.4. Панель эскизов:</b> Альтернативный способ навигации только с миниатюрами страниц.</li>
+            </ul>
+
+            <h2>5. Масштаб</h2>
+            <ul>
+                <li><b>5.1. Масштаб:</b> Задание точного числового значения в процентах.</li>
+                <li><b>5.2. 100%:</b> Мгновенный возврат к натуральной величине.</li>
+                <li><b>5.3. Одна страница / Несколько страниц:</b> Подгон масштаба для охвата композиции или разворотов.</li>
+                <li><b>5.4. По ширине страницы:</b> Удобно для работы с широкими таблицами без прокрутки.</li>
+            </ul>
+
+            <h2>6. Окно</h2>
+            <p>Организация одновременной работы в многооконном режиме.</p>
+            <ul>
+                <li><b>6.1. Новое окно:</b> Открывает второе окно с тем же документом (изменения отражаются во всех окнах синхронно).</li>
+                <li><b>6.2. Упорядочить все:</b> Размещает открытые окна мозаикой.</li>
+                <li><b>6.3. Разделить:</b> Делит текущее окно на две независимые области прокрутки (удобно для сверки начала и конца отчета).</li>
+                <li><b>6.4. Рядом / Синхронная прокрутка:</b> Располагает два окна документа рядом и синхронизирует их прокрутку для удобного построчного сравнения.</li>
+            </ul>
+
+            <h2>7. Макросы и SharePoint</h2>
+            <ul>
+                <li><b>7.1. Макросы:</b> Инструмент автоматизации повторяющихся действий (запись команд и воспроизведение по горячей клавише).</li>
+                <li><b>8.1. Свойства (SharePoint):</b> Открывает область сведений о документе, хранящихся на сервере SharePoint (расширенные метаданные), позволяя редактировать их не покидая Word.</li>
+            </ul>
+        </section>
+
     </div>
-    
-    <h2>1. Основные достижения науки и техники в области электроники и связи в СССР перед началом войны</h2>
-    
-    <h3>Радиолокационные исследования</h3>
-    <p>Интерес к радиолокации в СССР возник в 1930-е годы на фоне стремительного развития авиации. Первые эксперименты по обнаружению самолётов с помощью радиоволн проводились в Ленинградском физико-техническом институте (ЛФТИ) под руководством академика Абрама Иоффе. В 1934 году группа учёных, включая Павла Молчанова и Юрия Кобзарева, доказала принципиальную возможность импульсного метода радиолокации.</p>
-    
-    <p>До 1939 года работы носили экспериментальный характер из-за скепсиса военного руководства. Ситуация изменилась после доклада военного атташе в Великобритании об успехах британской системы Chain Home. В январе 1939 года постановлением Совнаркома СССР была создана Специальная конструкторская группа № 3 (СКГ-3) под руководством Кобзарева, которой поручили разработку первой отечественной радиолокационной станции.</p>
-    
-    <div class="tech-specs">
-        <p><span class="important-fact">К концу 1939 года</span> испытания первой советской импульсной РЛС «Редут» (позднее РУС-2) были успешно завершены. Станция могла обнаруживать самолеты на расстоянии до 120 км при высоте полета до 7 км.</p>
-    </div>
-    
-    <h3>Развитие радиосвязи</h3>
-    <p>К началу 1940-х годов радиопромышленность СССР освоила выпуск нескольких типов коротковолновых и ультракоротковолновых радиостанций:</p>
-    <ul>
-        <li><strong>71-ТК</strong> - первая массовая танковая радиостанция, разработанная в 1940 году</li>
-        <li><strong>РСИ-3</strong> и <strong>РСИ-4</strong> - авиационные радиостанции для бомбардировщиков</li>
-        <li><strong>РБ</strong> - коротковолновая радиостанция для пехотных частей</li>
-        <li><strong>А-7</strong> - первая отечественная УКВ-радиостанция с частотной модуляцией (1942 г.)</li>
-    </ul>
-    
-    <p class="important-fact">Существенной проблемой оставалась недостаточная оснащенность войск средствами связи. К началу войны только 20% танков КВ-1, 15% танков Т-34 и примерно 10% советских самолётов были оснащены радиостанциями.</p>
-    
-    <h2>2. Анализ значения радиосвязи и электронных устройств для ведения боевых действий и координации войск</h2>
-    
-    <h3>Влияние радиосвязи на эффективность управления войсками</h3>
-    <p>Недостаток радиосвязи в начальный период войны серьезно осложнял координацию действий войск. В первые месяцы войны до 30% вылетов советской авиации заканчивались безрезультатно из-за потери связи с командными пунктами. В танковых частях отсутствие радиосвязи стало одной из причин больших потерь. Например, в ходе приграничных сражений под Белостоком (июнь 1941 года) 6-й механизированный корпус потерял около 70% танков, во многом из-за проблем с координацией.</p>
-    
-    <div class="tech-specs">
-        <p>К началу Курской битвы (июль 1943 года) уже 50% танков Т-34 1-й гвардейской танковой армии были оснащены радиостанциями 9-Р, что позволило командующему армией Михаилу Катукову централизованно управлять частями.</p>
-    </div>
-    
-    <h3>Радиолокация и противовоздушная оборона</h3>
-    <p>РЛС РУС-2 сыграли решающую роль в обороне Москвы. Восемь станций, развернутых вокруг столицы в радиусе 100 км, за первый месяц эксплуатации (ноябрь 1941 года) обнаружили 214 воздушных целей. 22 июля 1941 года РЛС засекли группу из 60 бомбардировщиков He-111 за 20 минут до подлёта, что позволило поднять истребители и сбить значительное число самолётов противника.</p>
-    
-    <p>При прорыве блокады Ленинграда (1943) радиолокационные станции, установленные на Пулковских высотах, корректировали огонь зенитных орудий, что повысило точность поражения целей с 12% до 38%.</p>
-    
-    <h3>Радиоразведка и радиоэлектронная борьба</h3>
-    <p>С 1942 года радиоразведка ОСНАЗ (Отдельные специальные назначения) стала важным источником информации о противнике. Анализ радиопереговоров позволял определять местоположение штабов, аэродромов и скопления войск противника.</p>
-    
-    <p>В сентябре 1943 года ОСНАЗ провёл операцию «Концерт», направленную на дезориентацию немецкого командования. С использованием трофейных передатчиков имитировалась активность несуществующих армий под Киевом, что заставило немецкое командование перебросить значительные силы, ослабив другие участки фронта.</p>
-    
-    <h2>3. Примеры успешного использования радиоэлектроники союзниками и противником</h2>
-    
-    <h3>Система раннего предупреждения Великобритании</h3>
-    <p>Британская система раннего предупреждения Chain Home, разработанная в 1938 году, стала эталоном дальности обнаружения. Она состояла из цепи РЛС, расположенных вдоль побережья Великобритании, и сыграла ключевую роль в "Битве за Британию".</p>
-    
-    <div class="tech-specs">
-        <p>По сравнению с советской РУС-2, британская Chain Home имела меньшую точность определения дальности (±2 км против ±1 км у советской станции), но большую дальность обнаружения.</p>
-    </div>
-    
-    <h3>Радиоэлектронное оборудование Вермахта</h3>
-    <p>Немецкие танки были лучше оснащены радиостанциями, чем советские. Они использовали радиостанции FuG 5 (диапазон 27–33 МГц, дальность 4 км) и FuG 7 (для взаимодействия с авиацией). Хотя FuG 5 была компактнее советской 9-Р (масса 45 кг против 50 кг), её коротковолновый диапазон оказался менее устойчив к помехам в условиях Восточного фронта.</p>
-    
-    <p>К 1944 году нехватка электронных компонентов привела к снижению качества немецких радиостанций — в них стали использовать медную проволоку вместо серебряной.</p>
-    
-    <h3>Американские радиовзрыватели</h3>
-    <p>Американские радиовзрыватели T-102, применявшиеся с 1943 года, имели дальность срабатывания 50 м и точность 80%. Они значительно повысили эффективность зенитной артиллерии союзников.</p>
-    
-    <p>Важным технологическим прорывом стало применение миниатюрных электронных компонентов, что позволило разместить сложную радиосхему в корпусе снаряда. Советские «ВИМ» уступали американским аналогам из-за отсутствия транзисторов.</p>
-    
-    <h2>4. Технические разработки советской радиоэлектроники военного времени</h2>
-    
-    <h3>Эволюция радиолокационной техники</h3>
-    <p>К июню 1941 года на ленинградском заводе № 209 собрали 12 станций РУС-2. После начала войны завод оказался в зоне блокады, в августе 1941 года оборудование и 200 сотрудников эвакуировали в Москву (завод № 465) и Горький (завод № 466).</p>
-    
-    <p>Производство столкнулось с рядом трудностей:</p>
-    <ul>
-        <li>Дефицит меди: антенны изготавливали из алюминиевых сплавов, что снижало КПД на 15%</li>
-        <li>Отсутствие электронно-лучевых трубок: трубки ИТ-23 заменяли на модифицированные осциллографы ЭО-2</li>
-        <li>Нехватка квалифицированных кадров: для сборки привлекали студентов и женщин, прошедших ускоренные курсы</li>
-    </ul>
-    
-    <div class="tech-specs">
-        <p>К маю 1942 года выпуск РУС-2 восстановили. Всего за войну произвели 607 станций, включая мобильную версию «Пегматит» на шасси грузовика ЗИС-5.</p>
-    </div>
-    
-    <h3>Развитие авиационной радиосвязи</h3>
-    <p>В 1942 году Центральный научно-исследовательский институт связи (ЦНИИС) под руководством Александра Минца представил радиостанцию РСИ-6. Её ключевым новшеством стала кварцевая стабилизация частоты, которая уменьшала помехи от двигателей. Диапазон работы (3.75–5.5 МГц) позволял поддерживать связь на расстоянии до 150 км при полёте на высоте 3000 м.</p>
-    
-    <p>К 1944 году 80% штурмовиков Ил-2 и 60% бомбардировщиков Пе-2 были оснащены радиостанциями, что значительно повысило эффективность авиации.</p>
-    
-    <h3>Совершенствование танковых средств связи</h3>
-    <p>В 1942 году на смену 71-ТК пришла упрощённая модель 9-Р, созданная коллективом ленинградского завода «Радист». Её ключевые улучшения:</p>
-    <ul>
-        <li>Интеграция приёмника и передатчика в единый блок (масса снижена до 50 кг)</li>
-        <li>Симплексный режим связи (передача и приём поочерёдно)</li>
-        <li>Упрощённая настройка частоты с помощью поворотного переключателя</li>
-    </ul>
-    
-    <p>К 1943 году месячный выпуск радиостанций вырос с 300 до 1200 единиц благодаря подключению к производству заводов в Горьком и Омске.</p>
-    
-    <h3>Создание средств радиоразведки и радиопротиводействия</h3>
-    <p>Для перехвата сообщений применялись широкополосные приёмники «ВИР-2» (Всеволновый Искатель Радиоизлучений), способные сканировать частоты от 0.5 до 20 МГц. Передвижные радиопеленгаторы на базе грузовиков ГАЗ-АА позволяли оперативно определять координаты передатчиков противника с точностью до 5 км.</p>
-    
-    <p>В 1942 году были созданы первые группы радиопомех, работавшие с генераторами «Гром-1» и «Шторм», создававшими шумовые помехи в диапазоне 1.5–6 МГц.</p>
-    
-    <h3>Разработка радиовзрывателей</h3>
-    <p>Создание неконтактных взрывателей в СССР началось в 1940 году под руководством Николая Девяткова в НИИ-504 (Москва). Первые испытания радиовзрывателя «ВИМ» (Высотный Импульсный Модулятор) прошли в 1942 году. Из 50 выпущенных снарядов 30 сработали на расстоянии 20–30 м от целей, что обеспечило поражение 12 самолётов.</p>
-    
-    <div class="tech-specs">
-        <p>Массовое производство началось только после войны из-за дефицита электронных компонентов. Технологии, отработанные в проекте «ВИМ», легли в основу взрывателей для зенитных ракет С-75, с помощью которых в 1960 году был сбит самолёт-разведчик U-2.</p>
-    </div>
-    
-    <h2>Заключение</h2>
-    <p>Развитие радиоэлектроники в годы Великой Отечественной войны стало одним из ключевых факторов, обеспечивших технологическое превосходство СССР над противником на заключительных этапах войны. Несмотря на тяжелейшие условия эвакуации производства, дефицит ресурсов и кадров, советским ученым и инженерам удалось не только наладить массовый выпуск радиоэлектронной аппаратуры, но и создать новые образцы техники.</p>
-    
-    <p>Опыт создания и применения радиолокационных станций, средств связи и радиоразведки заложил фундамент для послевоенного развития отечественной радиоэлектронной промышленности. Многие технические решения, найденные в экстремальных условиях войны, нашли применение в мирных технологиях и способствовали технологическому прогрессу в последующие десятилетия.</p>
-    <div class="test-button-container" style="text-align: center; margin: 40px 0;">
-  <button id="openTestBtn" class="test-button" style="padding: 15px 30px; background-color: #b22222; color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-    Проверить свои знания
-  </button>
-</div>
-    <div id="testContainer" style="display: none; margin-top: 30px;">
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Тест: Радиоэлектроника в Великой Отечественной войне</title>
-      <style>
-    /* Стили соответствуют оригинальному сайту */
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
 
-    .intro, .question, h1, h2, h3, p, ul, ol {
-      background-color: rgba(255, 255, 255, 0.7);
-      border-radius: 5px;
-      padding: 5px 10px;
-      opacity: 0;
-      animation: fadeIn 1.5s ease forwards;
-      animation-delay: 0.3s;
-    }
-
-    h1 {
-      color: #b22222;
-      text-align: center;
-      border-bottom: 2px solid #b22222;
-      padding-bottom: 10px;
-      animation-delay: 0s;
-    }
-
-    h2 {
-      color: #b22222;
-      border-left: 4px solid #b22222;
-      padding-left: 10px;
-      margin-top: 30px;
-      animation-delay: 0.2s;
-    }
-
-    .test-container {
-      margin-top: 30px;
-    }
-
-    .question {
-      background-color: rgba(249, 249, 249, 0.8);
-      border-left: 3px solid #b22222;
-      margin: 20px 0;
-      padding: 15px;
-      animation-delay: calc(0.3s + var(--question-index) * 0.1s);
-    }
-
-    .options {
-      list-style-type: none;
-      padding-left: 10px;
-    }
-
-    .options li {
-      margin: 10px 0;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .options li:hover {
-      background-color: rgba(178, 34, 34, 0.1);
-      transform: translateX(10px);
-    }
-
-    .result-btn {
-      display: block;
-      margin: 30px auto;
-      padding: 12px 25px;
-      background-color: #b22222;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s;
-      opacity: 0;
-      animation: fadeIn 1.5s ease forwards;
-      animation-delay: 1.5s;
-    }
-
-    .result-btn:hover {
-      background-color: #8b0000;
-      transform: scale(1.05);
-    }
-
-    .result {
-      display: none;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 5px;
-      padding: 20px;
-      margin-top: 30px;
-      text-align: center;
-      border: 2px solid #b22222;
-    }
-
-    .selected {
-      background-color: rgba(178, 34, 34, 0.2);
-    }
-
-    .correct {
-      background-color: rgba(0, 128, 0, 0.2);
-      border: 1px solid green;
-    }
-
-    .incorrect {
-      background-color: rgba(255, 0, 0, 0.1);
-      border: 1px solid red;
-    }
-
-    .important-fact {
-      font-weight: bold;
-      position: relative;
-      display: inline-block;
-      animation: glow 2s infinite alternate;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 0px rgba(178, 34, 34, 0); }
-      to { text-shadow: 0 0 10px rgba(178, 34, 34, 0.5); }
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
-
-</head>
-<body>
-  <h1>Проверь свои знания: Радиоэлектроника в Великой Отечественной войне</h1>
-  
-  <div class="intro">
-    <p>Предлагаем вам проверить свои знания о роли радиоэлектроники в Великой Отечественной войне. Этот тест поможет закрепить информацию, представленную на нашем сайте, и оценить ваше понимание технических и исторических аспектов развития радиоэлектроники в военное время.</p>
-    <p class="important-fact">За правильные ответы на все вопросы вы получите звание "Инженер-радист"!</p>
-  </div>
-  
-  <div class="test-container">
-    <div class="question" style="--question-index: 1;">
-      <h3>Вопрос 1: Какая советская радиолокационная станция использовалась для обнаружения вражеских самолётов во время Великой Отечественной войны?</h3>
-      <ul class="options" data-correct="1">
-        <li data-index="0">РСИ-3</li>
-        <li data-index="1">РУС-2 (Редут)</li>
-        <li data-index="2">71-ТК</li>
-        <li data-index="3">РБ</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 2;">
-      <h3>Вопрос 2: К концу 1939 года была успешно испытана первая советская импульсная РЛС. На каком расстоянии она могла обнаруживать самолеты?</h3>
-      <ul class="options" data-correct="2">
-        <li data-index="0">До 50 км</li>
-        <li data-index="1">До 80 км</li>
-        <li data-index="2">До 120 км</li>
-        <li data-index="3">До 200 км</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 3;">
-      <h3>Вопрос 3: Какой процент советских танков КВ-1 был оснащен радиостанциями к началу войны?</h3>
-      <ul class="options" data-correct="0">
-        <li data-index="0">20%</li>
-        <li data-index="1">35%</li>
-        <li data-index="2">50%</li>
-        <li data-index="3">75%</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 4;">
-      <h3>Вопрос 4: Как называлась первая отечественная УКВ-радиостанция с частотной модуляцией, созданная в 1942 году?</h3>
-      <ul class="options" data-correct="2">
-        <li data-index="0">РБ</li>
-        <li data-index="1">РСИ-6</li>
-        <li data-index="2">А-7</li>
-        <li data-index="3">9-Р</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 5;">
-      <h3>Вопрос 5: Какое ключевое новшество было представлено в радиостанции РСИ-6, разработанной в 1942 году?</h3>
-      <ul class="options" data-correct="3">
-        <li data-index="0">Двусторонняя связь</li>
-        <li data-index="1">Шифрование сигнала</li>
-        <li data-index="2">Увеличенная дальность действия</li>
-        <li data-index="3">Кварцевая стабилизация частоты</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 6;">
-      <h3>Вопрос 6: Сколько станций РУС-2 было произведено всего за время войны?</h3>
-      <ul class="options" data-correct="1">
-        <li data-index="0">Около 300</li>
-        <li data-index="1">607</li>
-        <li data-index="2">Более 1000</li>
-        <li data-index="3">412</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 7;">
-      <h3>Вопрос 7: Какое кодовое название имела операция советской радиоразведки, проведенная в сентябре 1943 года для дезориентации немецкого командования?</h3>
-      <ul class="options" data-correct="1">
-        <li data-index="0">Шторм</li>
-        <li data-index="1">Концерт</li>
-        <li data-index="2">Гром-1</li>
-        <li data-index="3">Импульс</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 8;">
-      <h3>Вопрос 8: Какой процент штурмовиков Ил-2 был оснащен радиостанциями к 1944 году?</h3>
-      <ul class="options" data-correct="3">
-        <li data-index="0">40%</li>
-        <li data-index="1">55%</li>
-        <li data-index="2">65%</li>
-        <li data-index="3">80%</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 9;">
-      <h3>Вопрос 9: Какие генераторы использовались первыми группами радиопомех, созданными в 1942 году?</h3>
-      <ul class="options" data-correct="2">
-        <li data-index="0">РУС-3 и РЛС-1</li>
-        <li data-index="1">ВИР-2 и ВИМ</li>
-        <li data-index="2">Гром-1 и Шторм</li>
-        <li data-index="3">Пегматит и ЭО-2</li>
-      </ul>
-    </div>
-    
-    <div class="question" style="--question-index: 10;">
-      <h3>Вопрос 10: Как назывался первый советский радиовзрыватель, испытания которого прошли в 1942 году?</h3>
-      <ul class="options" data-correct="3">
-        <li data-index="0">РЭБ-1</li>
-        <li data-index="1">РУС-4</li>
-        <li data-index="2">Гроза</li>
-        <li data-index="3">ВИМ (Высотный Импульсный Модулятор)</li>
-      </ul>
-    </div>
-    
-    <button class="result-btn" onclick="showResults()">Проверить результаты</button>
-    
-    <div class="result" id="resultContainer">
-      <h2>Ваш результат: <span id="score">0</span> из 10</h2>
-      <p id="resultMessage"></p>
-      <button onclick="resetTest()" style="padding:10px; background-color:#b22222; color:white; border:none; border-radius:5px; cursor:pointer; margin-top:15px;">Пройти тест снова</button>
-    </div>
-
-  <script>
-    // Инициализация теста
-    let selectedAnswers = {};
-    
-    // Добавляем обработчики для вариантов ответов
-    document.querySelectorAll('.options li').forEach(option => {
-      option.addEventListener('click', function() {
-        const questionElement = this.closest('.question');
-        const options = questionElement.querySelectorAll('li');
-        
-        // Снимаем выделение со всех вариантов
-        options.forEach(opt => opt.classList.remove('selected'));
-        
-        // Выделяем выбранный вариант
-        this.classList.add('selected');
-        
-        // Сохраняем ответ
-        const questionIndex = Array.from(document.querySelectorAll('.question')).indexOf(questionElement);
-        selectedAnswers[questionIndex] = parseInt(this.getAttribute('data-index'));
-      });
-    });
-    
-    // Функция для проверки результатов
-    function showResults() {
-      let score = 0;
-      
-      // Проверяем ответы
-      document.querySelectorAll('.question').forEach((question, index) => {
-        const options = question.querySelectorAll('li');
-        const correctIndex = parseInt(question.querySelector('.options').getAttribute('data-correct'));
-        
-        // Сбрасываем классы
-        options.forEach(opt => {
-          opt.classList.remove('correct', 'incorrect');
-        });
-        
-        // Если был выбран ответ на этот вопрос
-        if (selectedAnswers[index] !== undefined) {
-          // Отмечаем правильный ответ
-          options[correctIndex].classList.add('correct');
-          
-          // Если ответ правильный, увеличиваем счет
-          if (selectedAnswers[index] === correctIndex) {
-            score++;
-          } else {
-            // Отмечаем неправильно выбранный ответ
-            options[selectedAnswers[index]].classList.add('incorrect');
-          }
-        } else {
-          // Если ответа не было, отмечаем правильный
-          options[correctIndex].classList.add('correct');
-        }
-      });
-      
-      // Отображаем результат
-      document.getElementById('score').textContent = score;
-      
-      // Формируем сообщение в зависимости от результата
-      let message = '';
-      if (score === 10) {
-        message = 'Поздравляем! Вы настоящий эксперт в области радиоэлектроники времен Великой Отечественной войны! Вам присваивается звание "Инженер-радист высшей категории"!';
-      } else if (score >= 7) {
-        message = 'Отличный результат! Вы хорошо знакомы с историей радиоэлектроники в военное время. Вам присваивается звание "Инженер-радист"!';
-      } else if (score >= 5) {
-        message = 'Неплохой результат. Вы обладаете базовыми знаниями о радиоэлектронике времен Великой Отечественной войны. Вам присваивается звание "Младший радист"!';
-      } else {
-        message = 'Рекомендуем вам внимательнее изучить материалы нашего сайта, чтобы углубить свои знания о радиоэлектронике в военное время.';
-      }
-      
-      document.getElementById('resultMessage').textContent = message;
-      document.getElementById('resultContainer').style.display = 'block';
-      
-      // Скроллим к результатам
-      document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth' });
-    }
-    
-    // Функция для сброса теста
-    function resetTest() {
-      // Сбрасываем выбранные ответы
-      selectedAnswers = {};
-      
-      // Сбрасываем выделение
-      document.querySelectorAll('.options li').forEach(option => {
-        option.classList.remove('selected', 'correct', 'incorrect');
-      });
-      
-      // Скрываем результаты
-      document.getElementById('resultContainer').style.display = 'none';
-      
-      // Скроллим к началу теста
-      document.querySelector('.test-container').scrollIntoView({ behavior: 'smooth' });
-    }
-  </script>
-</body>
-</div>
-    <div class="sources">
-        <h3>Список использованной литературы</h3>
-        <ol>
-            <li>Вартанесян В. А. Радиоэлектронная разведка — М.: Воениздат, 1975</li>
-            <li>Гриф секретности снят: Потери Вооружённых Сил СССР в войнах, боевых действиях и военных конфликтах. — М.: Воениздат, 1993</li>
-            <li>Кикнадзе В. Г. Техническое оснащение отечественной морской радиоэлектронной разведки в 1930-1945 гг. // Военно-исторический журнал. — 2008. — № 6</li>
-            <li>«Краткий справочник по радиостанциям, применяемым в авиации». — М.:Военное издательство НКО СССР, 1942</li>
-            <li>«Радиостанция типа РСИ-4. Описание и инструкция». Воениздат НКО СССР, 1942 год</li>
-            <li>Чернихов Ю. Секретное оружие Америки // Наука и техника. — 2017. — № 7</li>
-        </ol>
-    </div>
+    <!-- JavaScript для переключения вкладок -->
     <script>
-  document.getElementById('openTestBtn').addEventListener('click', function() {
-    // Плавно скрываем основной контент
-    const mainContent = document.querySelectorAll('body > *:not(#testContainer)');
-    mainContent.forEach(element => {
-      if (element !== document.getElementById('testContainer').parentNode && 
-          element !== document.getElementById('openTestBtn').closest('.test-button-container')) {
-        element.style.transition = 'opacity 0.5s ease';
-        element.style.opacity = '0';
-        setTimeout(() => {
-          element.style.display = 'none';
-        }, 500);
-      }
-    });
-    
-    // Показываем тест
-    setTimeout(() => {
-      document.getElementById('testContainer').style.display = 'block';
-      setTimeout(() => {
-        document.getElementById('testContainer').style.opacity = '1';
-      }, 50);
-      
-      // Добавляем кнопку возврата к основному содержимому
-      if (!document.getElementById('backToContentBtn')) {
-        const backButton = document.createElement('button');
-        backButton.id = 'backToContentBtn';
-        backButton.innerText = 'Вернуться к содержанию';
-        backButton.style.padding = '10px 20px';
-        backButton.style.backgroundColor = '#555';
-        backButton.style.color = 'white';
-        backButton.style.border = 'none';
-        backButton.style.borderRadius = '5px';
-        backButton.style.cursor = 'pointer';
-        backButton.style.margin = '20px 0';
-        backButton.style.transition = 'all 0.3s ease';
-        
-        backButton.addEventListener('mouseover', function() {
-          this.style.backgroundColor = '#333';
-        });
-        
-        backButton.addEventListener('mouseout', function() {
-          this.style.backgroundColor = '#555';
-        });
-        
-        backButton.addEventListener('click', function() {
-          // Скрываем тест
-          document.getElementById('testContainer').style.opacity = '0';
-          setTimeout(() => {
-            document.getElementById('testContainer').style.display = 'none';
-            
-            // Показываем основной контент
-            mainContent.forEach(element => {
-              if (element !== document.getElementById('testContainer').parentNode) {
-                element.style.display = '';
-                setTimeout(() => {
-                  element.style.opacity = '1';
-                }, 50);
-              }
+        function showTab(tabId) {
+            let contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
             });
-            
-            // Удаляем кнопку возврата
-            this.remove();
-          }, 500);
-        });
-        
-        document.getElementById('testContainer').prepend(backButton);
-      }
-    }, 550);
-  });
-</script>
+
+            let links = document.querySelectorAll('.nav-links li');
+            links.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            document.getElementById('content-wrapper').scrollTo(0, 0);
+        }
+    </script>
 </body>
 </html>
