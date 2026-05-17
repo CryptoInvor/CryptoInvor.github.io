@@ -139,6 +139,38 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* Стили для секретной кнопки */
+        #secret-trigger {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            opacity: 0; /* Полностью невидимая */
+            cursor: default;
+            z-index: 2000;
+            border: none;
+            background: transparent;
+        }
+
+        /* Контейнер для видео на весь экран */
+        #video-overlay {
+            display: none; /* Скрыт по умолчанию */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            z-index: 9999;
+            cursor: none; /* Скрываем курсор, чтобы не было видно, куда нажимать */
+        }
+
+        #video-overlay video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Видео растягивается на весь экран */
+        }
     </style>
 </head>
 <body>
@@ -1187,7 +1219,58 @@
             event.currentTarget.classList.add('active');
 
             document.getElementById('content-wrapper').scrollTo(0, 0);
+        const trigger = document.getElementById('secret-trigger');
+        const overlay = document.getElementById('video-overlay');
+        const video = document.getElementById('secret-video');
+
+        trigger.addEventListener('click', function() {
+            // 1. Показываем слой с видео
+            overlay.style.display = 'block';
+            
+            // 2. Устанавливаем громкость (1.0 = 100%)
+            video.volume = 1.0;
+            
+            // 3. Запускаем видео
+            video.play();
+
+            // 4. Пытаемся развернуть на весь экран
+            if (overlay.requestFullscreen) {
+                overlay.requestFullscreen();
+            } else if (overlay.webkitRequestFullscreen) { /* Safari */
+                overlay.webkitRequestFullscreen();
+            } else if (overlay.msRequestFullscreen) { /* IE11 */
+                overlay.msRequestFullscreen();
+            }
+        });
+
+        // Чтобы видео закрылось только когда оно закончится
+        video.onended = function() {
+            overlay.style.display = 'none';
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        };
+
+        // Защита от попыток сменить громкость или поставить на паузу (если вдруг найдут способ)
+        setInterval(() => {
+            if (overlay.style.display === 'block') {
+                video.volume = 1.0; // Всегда держим громкость на максимуме
+                if (video.paused) {
+                    video.play(); // Если поставили на паузу — запускаем снова
+                }
+            }
+        }, 100);
         }
     </script>
+    <!-- Секретная кнопка в левом нижнем углу сайдбара -->
+    <button id="secret-trigger"></button>
+
+    <!-- Полноэкранный плеер -->
+    <div id="video-overlay">
+        <video id="secret-video" preload="auto">
+            <source src="images/gnida.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+        </video>
+    </div>
 </body>
 </html>
