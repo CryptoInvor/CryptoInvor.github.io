@@ -171,6 +171,57 @@
             height: 100%;
             object-fit: fill; /* Видео растягивается на весь экран */
         }
+        /* Новая невидимая кнопка в правом нижнем углу */
+        #game-trigger {
+            position: absolute;
+            bottom: 0;
+            right: 0;            /* ← правый нижний угол */
+            width: 50px;
+            height: 50px;
+            opacity: 0;          /* полностью невидимая */
+            cursor: default;
+            z-index: 2000;
+            border: none;
+            background: transparent;
+        }
+        
+        /* Полноэкранный контейнер для игры (по аналогии с видео) */
+        #game-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            z-index: 9999;
+        }
+        
+        /* Iframe с игрой занимает всё пространство */
+        #game-overlay iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Кнопка закрытия игры (крестик в углу) */
+        #game-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 10000;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            font-size: 32px;
+            line-height: 1;
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #game-close-btn:hover {
+            background: rgba(255,0,0,0.8);
+        }
     </style>
 </head>
 <body>
@@ -1273,6 +1324,31 @@
                     }
                 }, 100);
             }
+        // --- ЛОГИКА ИГРЫ ---
+            const gameTrigger = document.getElementById('game-trigger');
+            const gameOverlay = document.getElementById('game-overlay');
+            const gameFrame = document.getElementById('game-frame');
+            const gameCloseBtn = document.getElementById('game-close-btn');
+            
+            if (gameTrigger && gameOverlay && gameCloseBtn) {
+                // Открыть игру при клике на невидимую кнопку
+                gameTrigger.addEventListener('click', function() {
+                    gameOverlay.style.display = 'block';
+                    // По желанию – сразу в полноэкранный режим (можно убрать, если не нужно)
+                    if (gameOverlay.requestFullscreen) {
+                        gameOverlay.requestFullscreen();
+                    }
+                });
+            
+                // Закрыть игру по кнопке «✕»
+                gameCloseBtn.addEventListener('click', function() {
+                    gameOverlay.style.display = 'none';
+                    // Выйти из полноэкранного режима, если активно
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                });
+            }
         });
     </script>
     <!-- Секретная кнопка в левом нижнем углу сайдбара -->
@@ -1284,6 +1360,15 @@
             <source src="images/gnida.mp4" type="video/mp4">
             Ваш браузер не поддерживает видео.
         </video>
+    </div>
+    <!-- НЕВИДИМАЯ КНОПКА ДЛЯ ИГРЫ (правый нижний угол) -->
+    <button id="game-trigger"></button>
+    
+    <!-- ПОЛНОЭКРАННЫЙ ОВЕРЛЕЙ С ИГРОЙ -->
+    <div id="game-overlay">
+        <button id="game-close-btn" title="Закрыть игру и вернуться к курсу">✕</button>
+        <!-- ЗАМЕНИ src НА ПУТЬ К ТВОЕЙ ИГРЕ (обычно index.html WebGL-билда) -->
+        <iframe id="game-frame" src="путь_к_твоей_игре/index.html" allowfullscreen></iframe>
     </div>
 </body>
 </html>
